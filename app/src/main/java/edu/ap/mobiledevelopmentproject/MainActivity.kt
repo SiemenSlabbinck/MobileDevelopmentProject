@@ -1,7 +1,9 @@
 package edu.ap.mobiledevelopmentproject
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -9,20 +11,65 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupWindow
 import android.widget.RadioButton
+import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
+
+    var dataInitialized:Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         var openFilterDiaglog = findViewById<ImageButton>(R.id.btn_filter)
+        var btnShowMapView = findViewById<Button>(R.id.btn_showMap)
 
+        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+
+                if(data != null)
+                {
+                    //If data does not exist yet -> create
+                    createData();
+                }
+
+            }
+        }
+
+        loadData()
+
+        if(dataInitialized == true)
+        {
+            val i = Intent(this, MapView::class.java)
+            resultLauncher.launch(i)
+        }
+
+        //Buttons clicked functions
         openFilterDiaglog.setOnClickListener {
             displayFilterDialog();
         }
 
+        btnShowMapView.setOnClickListener {
+            val i = Intent(this, MapView::class.java)
+            resultLauncher.launch(i)
+
+        }
+
     }
 
+    // Create data
+    private fun createData() {
+
+    }
+
+    // Load data
+    private fun loadData() {
+
+    }
+
+    //    Popup methods
     private fun displayFilterDialog() {
         var popupDialog = Dialog(this)
         popupDialog.setCancelable(false)
@@ -46,7 +93,6 @@ class MainActivity : AppCompatActivity() {
         popupDialog.show();
     }
 
-//    Popup methods
     fun onRadioButtonGenderClicked(view: View) {
         if (view is RadioButton) {
             // Is the button now checked?
