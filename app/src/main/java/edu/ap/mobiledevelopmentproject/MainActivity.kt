@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         var openFilterDiaglog = findViewById<ImageButton>(R.id.btn_filter)
         var btnShowMapView = findViewById<Button>(R.id.btn_showMap)
+        var btnAddLocation = findViewById<Button>(R.id.btn_addLocation)
 
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
@@ -54,7 +55,11 @@ class MainActivity : AppCompatActivity() {
         btnShowMapView.setOnClickListener {
             val i = Intent(this, MapView::class.java)
             resultLauncher.launch(i)
+        }
 
+        btnAddLocation.setOnClickListener {
+            val i = Intent(this, AddLocation::class.java)
+            resultLauncher.launch(i)
         }
 
     }
