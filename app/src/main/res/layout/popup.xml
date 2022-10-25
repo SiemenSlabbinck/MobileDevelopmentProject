@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="500dp"
+    android:background="#2F2E2E">
+
+
+    <ImageButton
+        android:id="@+id/btn_close_popup"
+        android:layout_width="37dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="17dp"
+        android:text="Filter"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:layout_width="330dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="51dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/headerGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Geslacht"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:id="@+id/radio_option_m"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="onRadioButtonGenderClicked"
+            android:text="M"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:id="@+id/radio_option_v"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="onRadioButtonGenderClicked"
+            android:text="V"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:id="@+id/radio_option_mv"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="onRadioButtonGenderClicked"
+            android:text="M/V"
+            android:textColor="#fff" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="329dp"
+        android:layout_height="83dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="184dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/headerWheelchair"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rolstoelvriendelijk"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:id="@+id/radio_option_wheelchairYes"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="onRadioButtonWheelchairClicked"
+            android:text="Ja"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:id="@+id/radio_option_wheelchairNo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="onRadioButtonWheelchairClicked"
+            android:text="Nee"
+            android:textColor="#fff" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="328dp"
+        android:layout_height="117dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="288dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/headerDamperTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Luiertafel"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:id="@+id/radio_option_damperTableAvailable"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="onRadioButtonDamperTableClicked"
+            android:text="Aanwezig"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:id="@+id/radio_option_damperTableNotAvailable"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="onRadioButtonDamperTableClicked"
+            android:text="Niet aanwezig"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:id="@+id/radio_option_damperTableNoToilet"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="onRadioButtonDamperTableClicked"
+            android:text="Enkel luiertafel (geen toilet)"
+            android:textColor="#fff" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_filter_on_values"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="16dp"
+        android:text="Filter"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
