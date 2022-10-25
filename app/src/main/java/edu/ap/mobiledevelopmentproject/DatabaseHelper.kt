@@ -1,8 +1,11 @@
 package edu.ap.mobiledevelopmentproject
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import org.json.JSONObject
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase) {
@@ -16,6 +19,28 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         super.onDowngrade(db, oldVersion, newVersion)
+    }
+
+    fun addToilet(jsonObject: JSONObject): Long {
+        val db = this.writableDatabase
+        val values = ContentValues()
+
+        values.put(STRAAT, jsonObject.getString("straat"))
+        values.put(HUISNUMMER, jsonObject.getString("huisnummer"))
+        values.put(POSTCODE, jsonObject.getString("postcode"))
+        values.put(DISTRICT, jsonObject.getString("district"))
+        values.put(DOELGROEP, jsonObject.getString("doelgroep"))
+        values.put(INTEGRAAL_TOEGANKELIJK, jsonObject.getString("integraal_toegankelijk"))
+        values.put(LUIERTAFEL, jsonObject.getString("luiertafel"))
+        values.put(X_COORD, jsonObject.getString("x_coord"))
+        values.put(Y_COORD, jsonObject.getString("y_coord"))
+
+        return db.insert(TABLE_TOILETS, null, values)
+    }
+
+    fun getToilets(): Cursor? {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT * FROM TOILETS", null)
     }
 
     companion object {
