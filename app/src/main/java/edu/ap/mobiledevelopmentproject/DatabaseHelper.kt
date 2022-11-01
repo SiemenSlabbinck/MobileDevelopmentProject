@@ -40,10 +40,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.insert(TABLE_TOILETS, null, values)
     }
 
-    fun dropToilet(){
+    fun deleteToilet(){
         val db = this.writableDatabase
-        db.execSQL(DELETE_TABLE_TOILETS)
-        db.close()
+        db.execSQL(DELETE_FROM_TABLE)
     }
 
     @SuppressLint("Range")
@@ -115,6 +114,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + Y_COORD + " TEXT );")
 
         private val DELETE_TABLE_TOILETS = "DROP TABLE IF EXISTS $TABLE_TOILETS"
+
+        private val DELETE_FROM_TABLE = "DELETE FROM $TABLE_TOILETS"
 
         private val SELECT_TOILETS = "SELECT * FROM $TABLE_TOILETS"
     }

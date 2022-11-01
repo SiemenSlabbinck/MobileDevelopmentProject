@@ -48,7 +48,9 @@ class MainActivity : AppCompatActivity() {
     fun createSQL(resultArray: ArrayList<Feature>?) {
         if (resultArray != null) {
             databaseHelper = DatabaseHelper(this);
-            //databaseHelper!!.dropToilet()
+
+            databaseHelper!!.deleteToilet()
+
             for (obj in resultArray){
                 databaseHelper!!.addToilet(obj)
             }
