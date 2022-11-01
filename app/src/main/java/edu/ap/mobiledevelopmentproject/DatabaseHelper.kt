@@ -27,17 +27,23 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.writableDatabase
         val values = ContentValues()
 
-        values.put(STRAAT, jsonObject.properties?.STRAAT)
-        values.put(HUISNUMMER, jsonObject.properties?.HUISNUMMER)
-        values.put(POSTCODE, jsonObject.properties?.POSTCODE)
+        values.put(STREET, jsonObject.properties?.STRAAT)
+        values.put(NUMBER, jsonObject.properties?.HUISNUMMER)
+        values.put(POSTAL_CODE, jsonObject.properties?.POSTCODE)
         values.put(DISTRICT, jsonObject.properties?.DISTRICT)
-        values.put(DOELGROEP, jsonObject.properties?.DOELGROEP)
-        values.put(INTEGRAAL_TOEGANKELIJK, jsonObject.properties?.INTEGRAAL_TOEGANKELIJK)
-        values.put(LUIERTAFEL, jsonObject.properties?.LUIERTAFEL)
+        values.put(TARGET_AUDIENCE, jsonObject.properties?.DOELGROEP)
+        values.put(WHEELCHAIR_ACCESSIBLE, jsonObject.properties?.INTEGRAAL_TOEGANKELIJK)
+        values.put(CHANGING_TABLE, jsonObject.properties?.LUIERTAFEL)
         values.put(X_COORD, jsonObject.geometry?.coordinates?.get(0))
         values.put(Y_COORD, jsonObject.geometry?.coordinates?.get(1))
 
         return db.insert(TABLE_TOILETS, null, values)
+    }
+
+    fun dropToilet(){
+        val db = this.writableDatabase
+        db.execSQL(DELETE_TABLE_TOILETS)
+        db.close()
     }
 
     @SuppressLint("Range")
@@ -47,7 +53,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.readableDatabase
         //val cursor = db.rawQuerry(SELECT_STUDENTS, null)
 
-        val projection= arrayOf(KEY_ID, STRAAT, HUISNUMMER, POSTCODE, DISTRICT, DOELGROEP, INTEGRAAL_TOEGANKELIJK, LUIERTAFEL, X_COORD, Y_COORD)
+        val projection= arrayOf(KEY_ID, STREET, NUMBER, POSTAL_CODE, DISTRICT, TARGET_AUDIENCE, WHEELCHAIR_ACCESSIBLE, CHANGING_TABLE, X_COORD, Y_COORD)
         val sortOrder = "${KEY_ID} ASC"
 
         val cursor = db.query(
@@ -62,16 +68,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         with(cursor) {
             while (moveToNext()) {
-                val straat = cursor.getString(cursor.getColumnIndex(STRAAT))
-                val huisnummer = cursor.getString(cursor.getColumnIndex(HUISNUMMER))
-                val postcode = cursor.getString(cursor.getColumnIndex(POSTCODE))
+                val street = cursor.getString(cursor.getColumnIndex(STREET))
+                val number = cursor.getString(cursor.getColumnIndex(NUMBER))
+                val postalCode = cursor.getString(cursor.getColumnIndex(POSTAL_CODE))
                 val district = cursor.getString(cursor.getColumnIndex(DISTRICT))
-                val doelgroep = cursor.getString(cursor.getColumnIndex(DOELGROEP))
-                val integraalToegankelijk = cursor.getString(cursor.getColumnIndex(INTEGRAAL_TOEGANKELIJK))
-                val luiertafel = cursor.getString(cursor.getColumnIndex(LUIERTAFEL))
+                val targetAudience = cursor.getString(cursor.getColumnIndex(TARGET_AUDIENCE))
+                val wheelchairAccessible = cursor.getString(cursor.getColumnIndex(WHEELCHAIR_ACCESSIBLE))
+                val changingTable = cursor.getString(cursor.getColumnIndex(CHANGING_TABLE))
                 val xCoord = cursor.getString(cursor.getColumnIndex((X_COORD)))
                 val yCoord = cursor.getString(cursor.getColumnIndex((Y_COORD)))
-                toiletsArrayList.add("$straat $huisnummer $postcode $district $doelgroep $integraalToegankelijk $luiertafel $xCoord $yCoord")
+                toiletsArrayList.add("$street $number $postalCode $district $targetAudience $wheelchairAccessible $changingTable $xCoord $yCoord")
             }
         }
         cursor.close()
@@ -85,26 +91,26 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private val DATABASE_VERSION = 1
         private val TABLE_TOILETS = "toilets"
         private val KEY_ID = "id"
-        private val STRAAT = "straat"
-        private val HUISNUMMER = "huisnummer"
-        private val POSTCODE = "postcode"
+        private val STREET = "street"
+        private val NUMBER = "number"
+        private val POSTAL_CODE = "postal_code"
         private val DISTRICT = "disctrict"
-        private val DOELGROEP = "doelgroep"
-        private val INTEGRAAL_TOEGANKELIJK = "integraal_toegankelijk"
-        private val LUIERTAFEL = "luiertafel"
-        private val X_COORD = "lat"
-        private val Y_COORD = "long"
+        private val TARGET_AUDIENCE = "target_audience"
+        private val WHEELCHAIR_ACCESSIBLE = "wheelchair_accessible"
+        private val CHANGING_TABLE = "changing_table"
+        private val X_COORD = "x_coord"
+        private val Y_COORD = "y_coord"
 
         private val CREATE_TABLE_TOILETS = ("CREATE TABLE "
                 + TABLE_TOILETS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + STRAAT + " TEXT,"
-                + HUISNUMMER + " INTEGER,"
-                + POSTCODE + " TEXT,"
+                + STREET + " TEXT,"
+                + NUMBER + " INTEGER,"
+                + POSTAL_CODE + " TEXT,"
                 + DISTRICT + " TEXT,"
-                + DOELGROEP + " TEXT,"
-                + INTEGRAAL_TOEGANKELIJK + " TEXT,"
-                + LUIERTAFEL + " TEXT,"
+                + TARGET_AUDIENCE + " TEXT,"
+                + WHEELCHAIR_ACCESSIBLE + " TEXT,"
+                + CHANGING_TABLE + " TEXT,"
                 + X_COORD + " TEXT,"
                 + Y_COORD + " TEXT );")
 

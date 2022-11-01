@@ -48,10 +48,14 @@ class MainActivity : AppCompatActivity() {
     fun createSQL(resultArray: ArrayList<Feature>?) {
         if (resultArray != null) {
             databaseHelper = DatabaseHelper(this);
+            //databaseHelper!!.dropToilet()
             for (obj in resultArray){
                 databaseHelper!!.addToilet(obj)
             }
         }
+
+        println(databaseHelper!!.allToilets())
+
     }
 }
 
