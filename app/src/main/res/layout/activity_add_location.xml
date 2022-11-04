@@ -34,7 +34,7 @@
 
     <LinearLayout
         android:layout_width="308dp"
-        android:layout_height="104dp"
+        android:layout_height="560dp"
         android:layout_marginTop="93dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,15 +45,16 @@
         <EditText
             android:id="@+id/streetname"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="33dp"
             android:layout_margin="5dp"
             android:background="@drawable/border"
             android:hint="Straatnaam"
             android:inputType="text"
             android:maxLength="30"
             android:paddingLeft="30dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="16dp" />
 
         <EditText
             android:id="@+id/housenumber"
@@ -65,24 +66,263 @@
             android:inputType="text"
             android:maxLength="10"
             android:paddingLeft="30dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/zipcode"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border"
+            android:hint="Postcode"
+            android:inputType="text"
+            android:maxLength="10"
+            android:paddingLeft="30dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/district"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border"
+            android:hint="District (Stad)"
+            android:inputType="text"
+            android:maxLength="10"
+            android:paddingLeft="30dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/x_coord"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border"
+            android:hint="X Coordinaat"
+            android:inputType="text"
+            android:maxLength="10"
+            android:paddingLeft="30dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/y_coord"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border"
+            android:hint="Y Coordinaat"
+            android:inputType="text"
+            android:maxLength="10"
+            android:paddingLeft="30dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border"
+            android:hint="E-mail adres"
+            android:inputType="text"
+            android:maxLength="10"
+            android:paddingLeft="30dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/genderGroup"
+                android:layout_width="130dp"
+                android:layout_height="110dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/headerGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Geslacht"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/radio_option_m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="M"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/radio_option_v"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="V"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/radio_option_mv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="M/V"
+                    android:textColor="#000" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/WheelchairGroup"
+                android:layout_width="130dp"
+                android:layout_height="110dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/headerWheelchair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rolstoelvriendelijk"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/radio_option_wheelchairYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Ja"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/radio_option_wheelchairNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Nee"
+                    android:textColor="#000" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/DamperTableGroup"
+                android:layout_width="130dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/headerDamperTable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Luiertafel"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/radio_option_damperTableAvailable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Aanwezig"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/radio_option_damperTableNotAvailable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Niet aanwezig"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/radio_option_damperTableNoToilet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Enkel luiertafel (geen toilet)"
+                    android:textColor="#000" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/availableGroup"
+                android:layout_width="130dp"
+                android:layout_height="110dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/isAvailableText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Beschikbaar"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/isAvailable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Ja"
+                    android:textColor="#000" />
+
+                <RadioButton
+                    android:id="@+id/isNotAvailable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Nee"
+                    android:textColor="#000" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
     <Button
-        android:id="@+id/btn_saveLocation"
+        android:id="@+id/btnSaveLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
         android:layout_marginTop="664dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginEnd="140dp"
         android:layout_marginBottom="19dp"
         android:backgroundTint="#97000C"
         android:text="Toevoegen"
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

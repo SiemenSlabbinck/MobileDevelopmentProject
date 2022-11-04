@@ -30,6 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
+        android:id="@+id/GenderGroup"
         android:layout_width="330dp"
         android:layout_height="110dp"
         android:layout_marginStart="20dp"
@@ -50,7 +51,6 @@
             android:id="@+id/radio_option_m"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="onRadioButtonGenderClicked"
             android:text="M"
             android:textColor="#fff" />
 
@@ -58,7 +58,6 @@
             android:id="@+id/radio_option_v"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="onRadioButtonGenderClicked"
             android:text="V"
             android:textColor="#fff" />
 
@@ -66,12 +65,12 @@
             android:id="@+id/radio_option_mv"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="onRadioButtonGenderClicked"
             android:text="M/V"
             android:textColor="#fff" />
     </RadioGroup>
 
     <RadioGroup
+        android:id="@+id/WheelchairGroup"
         android:layout_width="329dp"
         android:layout_height="83dp"
         android:layout_marginStart="20dp"
@@ -92,7 +91,6 @@
             android:id="@+id/radio_option_wheelchairYes"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="onRadioButtonWheelchairClicked"
             android:text="Ja"
             android:textColor="#fff" />
 
@@ -100,13 +98,13 @@
             android:id="@+id/radio_option_wheelchairNo"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="onRadioButtonWheelchairClicked"
             android:text="Nee"
             android:textColor="#fff" />
 
     </RadioGroup>
 
     <RadioGroup
+        android:id="@+id/headerDamperTableGroup"
         android:layout_width="328dp"
         android:layout_height="117dp"
         android:layout_marginStart="20dp"
@@ -127,7 +125,6 @@
             android:id="@+id/radio_option_damperTableAvailable"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="onRadioButtonDamperTableClicked"
             android:text="Aanwezig"
             android:textColor="#fff" />
 
@@ -135,7 +132,6 @@
             android:id="@+id/radio_option_damperTableNotAvailable"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="onRadioButtonDamperTableClicked"
             android:text="Niet aanwezig"
             android:textColor="#fff" />
 
@@ -143,7 +139,6 @@
             android:id="@+id/radio_option_damperTableNoToilet"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="onRadioButtonDamperTableClicked"
             android:text="Enkel luiertafel (geen toilet)"
             android:textColor="#fff" />
     </RadioGroup>
