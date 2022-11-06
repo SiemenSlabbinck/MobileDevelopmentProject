@@ -66,7 +66,9 @@ class MainActivity : AppCompatActivity() {
 
     // Create data
     private fun createData() {
-
+        // Fetch json data and create local SQLite database
+        /*var sqlHelper = SqlHelper(this@MainActivity)
+        sqlHelper.fetchJson()*/
     }
 
     // Load data
