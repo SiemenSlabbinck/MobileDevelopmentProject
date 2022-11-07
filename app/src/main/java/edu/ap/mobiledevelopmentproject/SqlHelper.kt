@@ -50,9 +50,14 @@ class SqlHelper(_context: Context) {
 
                 val gson = GsonBuilder().create()
 
-                resultArray = (gson.fromJson(body, Toilet::class.java)).features
+                resultArray = (gson.fromJson(body, ToiletGson::class.java)).features
                 createSQL(resultArray)
             }
         })
+    }
+
+    fun getToilets(): java.util.ArrayList<String>? {
+        var list = databaseHelper?.allToilets()
+        return list
     }
 }

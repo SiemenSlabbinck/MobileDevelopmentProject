@@ -35,6 +35,6 @@ class Properties {
     var Y_COORD = 0.0
 }
 
-class Toilet {
+class ToiletGson {
     var features: ArrayList<Feature>? = null
 }

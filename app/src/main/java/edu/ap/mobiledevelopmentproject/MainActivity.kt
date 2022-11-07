@@ -62,13 +62,22 @@ class MainActivity : AppCompatActivity() {
             resultLauncher.launch(i)
         }
 
+
+
     }
 
     // Create data
     private fun createData() {
         // Fetch json data and create local SQLite database
         /*var sqlHelper = SqlHelper(this@MainActivity)
-        sqlHelper.fetchJson()*/
+        sqlHelper.fetchJson()
+        var test = sqlHelper.getToilets()
+        if (test != null) {
+            for (toilet in test){
+                println(toilet)
+            }
+        }*/
+
     }
 
     // Load data
