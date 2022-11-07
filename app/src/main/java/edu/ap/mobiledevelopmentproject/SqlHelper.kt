@@ -23,7 +23,6 @@ class SqlHelper(_context: Context) {
 
         if (toiletArray != null) {
             databaseHelper = DatabaseHelper(context);
-
             databaseHelper!!.deleteToilet()
 
             for (obj in toiletArray){
