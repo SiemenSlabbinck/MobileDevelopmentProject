@@ -16,13 +16,17 @@ class SqlHelper(_context: Context) {
     private var databaseHelper: DatabaseHelper? = null
     private var context = _context
 
-    fun createSQL(resultArray: ArrayList<Feature>?){
-        if (resultArray != null) {
+    fun createSQL(resultString: String?){
+        println("Attempting to create SQL")
+        val gson = GsonBuilder().create()
+        var toiletArray = (gson.fromJson(resultString, ToiletGson::class.java)).features
+
+        if (toiletArray != null) {
             databaseHelper = DatabaseHelper(context);
 
             databaseHelper!!.deleteToilet()
 
-            for (obj in resultArray){
+            for (obj in toiletArray){
                 databaseHelper!!.addToilet(obj)
             }
         }
@@ -31,12 +35,12 @@ class SqlHelper(_context: Context) {
 
     }
 
-    fun fetchJson(){
+    fun fetchJson(): String? {
         println("Attempting to fetch JSON")
         val url = "https://geodata.antwerpen.be/arcgissql/rest/services/P_Portal/portal_publiek1/MapServer/8/query?outFields=*&where=1%3D1&f=geojson"
         val request = Request.Builder().url(url).build()
 
-        var resultArray: ArrayList<Feature>? = null
+        var resultString: String? = null
 
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
@@ -47,17 +51,16 @@ class SqlHelper(_context: Context) {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 println(body)
-
-                val gson = GsonBuilder().create()
-
-                resultArray = (gson.fromJson(body, ToiletGson::class.java)).features
-                createSQL(resultArray)
+                resultString = body
             }
         })
+        return resultString
     }
 
-    fun getToilets(): java.util.ArrayList<String>? {
-        var list = databaseHelper?.allToilets()
-        return list
+    fun getToilets(): java.util.ArrayList<Toilet>? {
+        databaseHelper = DatabaseHelper(context);
+        var toiletList = databaseHelper?.allToilets()
+        return toiletList
     }
+
 }

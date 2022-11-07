@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 class MainActivity : AppCompatActivity() {
 
     var dataInitialized:Boolean = false
+    var sqlHelper: SqlHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,28 +62,36 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this, AddLocation::class.java)
             resultLauncher.launch(i)
         }
-
-
-
     }
 
     // Create data
     private fun createData() {
-        // Fetch json data and create local SQLite database
-        /*var sqlHelper = SqlHelper(this@MainActivity)
-        sqlHelper.fetchJson()
-        var test = sqlHelper.getToilets()
-        if (test != null) {
-            for (toilet in test){
-                println(toilet)
-            }
-        }*/
+        /*
+        //Fetch json and create sqllite database
+        if (sqlHelper == null)
+            sqlHelper = SqlHelper(this@MainActivity)
+        var json = sqlHelper.fetchJson()
+        if (json != null)
+            sqlHelper.createSQL(json)
 
+        //add sqllite data to firebase
+        var firebaseHelper = FirebaseHelper()
+        var toilets = sqlHelper.getToilets()
+        if (toilets != null) {
+            for (toilet in toilets){
+                firebaseHelper.add(toilet)
+            }
+        }
+         */
     }
 
     // Load data
     private fun loadData() {
-
+        /*
+        if (sqlHelper == null)
+            sqlHelper = SqlHelper(this@MainActivity)
+        var toilets = sqlHelper!!.getToilets()
+         */
     }
 
     //    Popup methods

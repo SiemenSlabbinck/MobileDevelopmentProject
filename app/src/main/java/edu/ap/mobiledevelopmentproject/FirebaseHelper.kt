@@ -8,7 +8,7 @@ import com.google.firebase.ktx.Firebase
 class FirebaseHelper {
     private val db = Firebase.firestore
 
-    fun add(toilet: String){
+    fun add(toilet: Toilet){
         db.collection("toilets")
             .add(toilet)
             .addOnSuccessListener { documentReference ->

@@ -46,11 +46,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     @SuppressLint("Range")
-    fun allToilets(): ArrayList<String>{
-        val toiletsArrayList = ArrayList<String>()
-        var name: String
+    fun allToilets(): ArrayList<Toilet>{
+        val toiletList = ArrayList<Toilet>()
         val db = this.readableDatabase
-        //val cursor = db.rawQuerry(SELECT_STUDENTS, null)
 
         val projection= arrayOf(KEY_ID, STREET, NUMBER, POSTAL_CODE, DISTRICT, TARGET_AUDIENCE, WHEELCHAIR_ACCESSIBLE, CHANGING_TABLE, X_COORD, Y_COORD)
         val sortOrder = "${KEY_ID} ASC"
@@ -67,21 +65,22 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         with(cursor) {
             while (moveToNext()) {
-                val street = cursor.getString(cursor.getColumnIndex(STREET))
-                val number = cursor.getString(cursor.getColumnIndex(NUMBER))
-                val postalCode = cursor.getString(cursor.getColumnIndex(POSTAL_CODE))
-                val district = cursor.getString(cursor.getColumnIndex(DISTRICT))
-                val targetAudience = cursor.getString(cursor.getColumnIndex(TARGET_AUDIENCE))
-                val wheelchairAccessible = cursor.getString(cursor.getColumnIndex(WHEELCHAIR_ACCESSIBLE))
-                val changingTable = cursor.getString(cursor.getColumnIndex(CHANGING_TABLE))
-                val xCoord = cursor.getString(cursor.getColumnIndex((X_COORD)))
-                val yCoord = cursor.getString(cursor.getColumnIndex((Y_COORD)))
-                toiletsArrayList.add("$street $number $postalCode $district $targetAudience $wheelchairAccessible $changingTable $xCoord $yCoord")
+                var toiletInfo = Toilet()
+                toiletInfo.street = cursor.getString(cursor.getColumnIndex(STREET))
+                toiletInfo.number = cursor.getString(cursor.getColumnIndex(NUMBER))
+                toiletInfo.postal_code = cursor.getInt(cursor.getColumnIndex(POSTAL_CODE))
+                toiletInfo.district = cursor.getString(cursor.getColumnIndex(DISTRICT))
+                toiletInfo.target_audience = cursor.getString(cursor.getColumnIndex(TARGET_AUDIENCE))
+                toiletInfo.wheelchair_accessible = cursor.getString(cursor.getColumnIndex(WHEELCHAIR_ACCESSIBLE))
+                toiletInfo.changing_table = cursor.getString(cursor.getColumnIndex(CHANGING_TABLE))
+                toiletInfo.x_coord = cursor.getDouble(cursor.getColumnIndex((X_COORD)))
+                toiletInfo.y_coord = cursor.getDouble(cursor.getColumnIndex((Y_COORD)))
+                toiletList.add(toiletInfo)
             }
         }
         cursor.close()
 
-        return toiletsArrayList
+        return toiletList
     }
 
     companion object {
