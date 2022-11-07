@@ -23,6 +23,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         super.onDowngrade(db, oldVersion, newVersion)
     }
 
+    // adds toilet to sqllite database
     fun addToilet(jsonObject: Feature): Long {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -40,13 +41,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.insert(TABLE_TOILETS, null, values)
     }
 
+    // deletes all toilets from database
     fun deleteToilet(){
         val db = this.writableDatabase
         db.execSQL(DELETE_FROM_TABLE)
     }
 
+    // returns list of toilets from sqlite database
     @SuppressLint("Range")
     fun allToilets(): ArrayList<Toilet>{
+
         val toiletList = ArrayList<Toilet>()
         val db = this.readableDatabase
 

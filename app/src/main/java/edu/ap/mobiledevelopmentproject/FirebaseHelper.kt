@@ -9,6 +9,7 @@ import java.util.ArrayList
 class FirebaseHelper {
     private val db = Firebase.firestore
 
+    // add toilet to firebase collection
     fun add(toilet: Toilet){
         db.collection("toilets")
             .add(toilet)
@@ -20,6 +21,7 @@ class FirebaseHelper {
             }
     }
 
+    // returns list of toilets from firebase collection
     fun read(): ArrayList<Toilet> {
         val toiletList = ArrayList<Toilet>()
         db.collection("toilets")
@@ -46,6 +48,7 @@ class FirebaseHelper {
         return toiletList
     }
 
+    // deletes document from firebase collection
     fun deleteDocument(doc: String){
         db.collection("toilets").document(doc)
             .delete()

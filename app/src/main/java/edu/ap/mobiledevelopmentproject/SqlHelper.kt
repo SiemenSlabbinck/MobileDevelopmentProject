@@ -16,6 +16,7 @@ class SqlHelper(_context: Context) {
     private var databaseHelper: DatabaseHelper? = null
     private var context = _context
 
+    // creates sqlite database from json string
     fun createSQL(resultString: String?){
         println("Attempting to create SQL")
         val gson = GsonBuilder().create()
@@ -34,6 +35,7 @@ class SqlHelper(_context: Context) {
 
     }
 
+    // fetches json string from url
     fun fetchJson(): String? {
         println("Attempting to fetch JSON")
         val url = "https://geodata.antwerpen.be/arcgissql/rest/services/P_Portal/portal_publiek1/MapServer/8/query?outFields=*&where=1%3D1&f=geojson"
@@ -56,6 +58,7 @@ class SqlHelper(_context: Context) {
         return resultString
     }
 
+    // returns list of toilets from sqlite database
     fun getToilets(): java.util.ArrayList<Toilet>? {
         databaseHelper = DatabaseHelper(context);
         var toiletList = databaseHelper?.allToilets()
