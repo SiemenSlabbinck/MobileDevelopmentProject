@@ -23,7 +23,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         super.onDowngrade(db, oldVersion, newVersion)
     }
 
-    // adds toilet to sqllite database
+    // add toilet to sqllite database
     fun addToilet(jsonObject: Feature): Long {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -41,8 +41,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.insert(TABLE_TOILETS, null, values)
     }
 
+    fun addToilet(toilet: Toilet): Long {
+        val db = this.writableDatabase
+        val values = ContentValues()
+
+        values.put(STREET, toilet.street)
+        values.put(NUMBER, toilet.number)
+        values.put(POSTAL_CODE, toilet.postal_code)
+        values.put(DISTRICT, toilet.district)
+        values.put(TARGET_AUDIENCE, toilet.target_audience)
+        values.put(WHEELCHAIR_ACCESSIBLE, toilet.wheelchair_accessible)
+        values.put(CHANGING_TABLE, toilet.changing_table)
+        values.put(X_COORD, toilet.x_coord)
+        values.put(Y_COORD, toilet.y_coord)
+
+        return db.insert(TABLE_TOILETS, null, values)
+    }
+
     // deletes all toilets from database
-    fun deleteToilet(){
+    fun deleteToilet() {
         val db = this.writableDatabase
         db.execSQL(DELETE_FROM_TABLE)
     }

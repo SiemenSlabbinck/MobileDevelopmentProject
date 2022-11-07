@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 import androidx.appcompat.app.AppCompatActivity
+import java.util.ArrayList
 
 class SqlHelper(_context: Context) {
 
@@ -32,7 +33,11 @@ class SqlHelper(_context: Context) {
         }
 
         println(databaseHelper!!.allToilets())
+    }
 
+    fun createSQL(toiletArray: ArrayList<Toilet>){
+        for (toilet in toiletArray)
+            databaseHelper!!.addToilet(toilet)
     }
 
     // fetches json string from url
