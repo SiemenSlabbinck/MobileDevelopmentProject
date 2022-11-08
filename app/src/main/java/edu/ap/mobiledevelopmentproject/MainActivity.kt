@@ -101,6 +101,9 @@ class MainActivity : AppCompatActivity() {
                 toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString())
             }
         }
+        if(toilets.isEmpty())
+            toiletFormattedList.add("Geen toiletten gevonden...")
+
         // access the listView from xml file
         var mListView = findViewById<ListView>(id.listView)
         arrayAdapter = ArrayAdapter(this,
