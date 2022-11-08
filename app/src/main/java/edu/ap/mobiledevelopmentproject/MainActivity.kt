@@ -10,19 +10,21 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import edu.ap.mobiledevelopmentproject.R.*
 
 class MainActivity : AppCompatActivity() {
 
     var dataInitialized:Boolean = false
     var sqlHelper: SqlHelper? = null
+    private var toilets = ArrayList<Toilet>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(layout.activity_main)
 
-        var openFilterDiaglog = findViewById<ImageButton>(R.id.btn_filter)
-        var btnShowMapView = findViewById<Button>(R.id.btn_showMap)
-        var btnAddLocation = findViewById<Button>(R.id.btn_addLocation)
+        var openFilterDiaglog = findViewById<ImageButton>(id.btn_filter)
+        var btnShowMapView = findViewById<Button>(id.btn_showMap)
+        var btnAddLocation = findViewById<Button>(id.btn_addLocation)
 
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
@@ -40,8 +42,6 @@ class MainActivity : AppCompatActivity() {
 //        createData();
 
         loadData()
-        loadDataInList()
-
 
 
         if(dataInitialized == true)
@@ -87,25 +87,106 @@ class MainActivity : AppCompatActivity() {
     private fun loadData() {
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
-        var toilets = sqlHelper!!.getToilets()
-        Log.d("toilets", toilets.toString())
+        this.toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+
+    // Load data in listView
+        loadDataInList(toilets)
     }
 
-    fun loadDataInList() {
+    fun loadDataInList(toilets:ArrayList<Toilet>) {
         val arrayAdapter: ArrayAdapter<*>
-        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
-        val toiletAdresses = ArrayList<String>()
+        val toiletFormattedList = ArrayList<String>()
         if (toilets != null) {
             for (toilet in toilets) {
-                toiletAdresses.add(toilet.street.toString() + " " + toilet.number.toString())
+                toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString())
             }
         }
         // access the listView from xml file
-        var mListView = findViewById<ListView>(R.id.listView)
-
+        var mListView = findViewById<ListView>(id.listView)
         arrayAdapter = ArrayAdapter(this,
-            android.R.layout.simple_list_item_1, toiletAdresses)
+            android.R.layout.simple_list_item_1, toiletFormattedList)
         mListView.adapter = arrayAdapter
+
+    }
+
+    // Filters
+    fun filterListOnGender(gender:String) {
+        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        val filteredList = ArrayList<Toilet>()
+        filteredList.clear()
+
+        for (e in toilets) {
+            if(gender == "man") {
+                for(toilet in toilets) {
+                    if(toilet.target_audience == gender)
+                        filteredList.add(toilet)
+                }
+            }
+            if(gender == "vrouw") {
+                for(toilet in toilets) {
+                    if(toilet.target_audience == gender)
+                        filteredList.add(toilet)
+                }
+            }
+            if(gender == "man/vrouw") {
+                for(toilet in toilets) {
+                    if(toilet.target_audience == gender)
+                        filteredList.add(toilet)
+                }            }
+        }
+
+        loadDataInList(filteredList)
+    }
+
+    fun filterListOnWheelchairAvailable(wheelchairAvailable:Boolean) {
+        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        val filteredList = ArrayList<Toilet>()
+        filteredList.clear()
+
+        for (e in toilets) {
+            if(wheelchairAvailable) {
+                for(toilet in toilets) {
+                    if(toilet.wheelchair_accessible == "ja")
+                        filteredList.add(toilet)
+                }
+            }
+            if(!wheelchairAvailable) {
+                for(toilet in toilets) {
+                    if(toilet.wheelchair_accessible == "nee" || toilet.wheelchair_accessible == null)
+                        filteredList.add(toilet)
+                }
+            }
+        }
+
+        loadDataInList(filteredList)
+    }
+
+    fun filterListOnDamperTable(damperTable:String) {
+        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        val filteredList = ArrayList<Toilet>()
+        filteredList.clear()
+
+        for (e in toilets) {
+            if(damperTable == "ja") {
+                for(toilet in toilets) {
+                    if(toilet.changing_table == damperTable)
+                        filteredList.add(toilet)
+                }
+            }
+            if(damperTable == "nee") {
+                for(toilet in toilets) {
+                    if(toilet.changing_table == damperTable || toilet.changing_table == null)
+                        filteredList.add(toilet)
+                }
+            }
+            if(damperTable == "niet van toepassing") {
+                for(toilet in toilets) {
+                    if(toilet.changing_table == damperTable || toilet.changing_table == null)
+                        filteredList.add(toilet)
+                }            }
+        }
+
+        loadDataInList(filteredList)
     }
 
 
@@ -113,11 +194,11 @@ class MainActivity : AppCompatActivity() {
     private fun displayFilterDialog() {
         var popupDialog = Dialog(this)
         popupDialog.setCancelable(false)
-        popupDialog.setContentView(R.layout.popup)
+        popupDialog.setContentView(layout.popup)
 
         //components of view
-        var closeButton = popupDialog.findViewById<ImageButton>(R.id.btn_close_popup)
-        var filterButton = popupDialog.findViewById<Button>(R.id.btn_filter_on_values)
+        var closeButton = popupDialog.findViewById<ImageButton>(id.btn_close_popup)
+        var filterButton = popupDialog.findViewById<Button>(id.btn_filter_on_values)
 
         //functions
         closeButton.setOnClickListener {
@@ -127,6 +208,7 @@ class MainActivity : AppCompatActivity() {
 
         filterButton.setOnClickListener {
             //Dismiss popup dialog
+
             popupDialog.dismiss();
         }
 
@@ -134,23 +216,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onRadioButtonGenderClicked(view: View) {
+
         if (view is RadioButton) {
             // Is the button now checked?
             val checked = view.isChecked
 
             // Check which radio button was clicked
             when (view.getId()) {
-                R.id.radio_option_m ->
+                id.radio_option_m ->
                     if (checked) {
                         // show only man toilet
+                        filterListOnGender("man")
                     }
-                R.id.radio_option_v ->
+                id.radio_option_v ->
                     if (checked) {
                         // show only woman toilet
+                        filterListOnGender("vrouw")
                     }
-                R.id.radio_option_mv ->
+                id.radio_option_mv ->
                     if (checked) {
                         // show man and women toilet
+                        filterListOnGender("man/vrouw")
                     }
             }
         }
@@ -163,13 +249,41 @@ class MainActivity : AppCompatActivity() {
 
             // Check which radio button was clicked
             when (view.getId()) {
-                R.id.radio_option_wheelchairYes ->
+                id.radio_option_wheelchairYes ->
                     if (checked) {
                         // show only wheelchair friendly toilets
+                        filterListOnWheelchairAvailable(true)
                     }
-                R.id.radio_option_wheelchairNo ->
+                id.radio_option_wheelchairNo ->
                     if (checked) {
                         // show all toilets
+                        filterListOnWheelchairAvailable(false)
+                    }
+            }
+        }
+    }
+
+    fun onRadioButtonDamperTableClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                id.radio_option_damperTableAvailable ->
+                    if (checked) {
+                        // show only wheelchair friendly toilets
+                        filterListOnDamperTable("ja")
+                    }
+                id.radio_option_damperTableNotAvailable ->
+                    if (checked) {
+                        // show all toilets
+                        filterListOnDamperTable("nee")
+                    }
+                id.radio_option_damperTableNoToilet ->
+                    if (checked) {
+                        // show all toilets
+                        filterListOnDamperTable("niet van toepassing")
                     }
             }
         }

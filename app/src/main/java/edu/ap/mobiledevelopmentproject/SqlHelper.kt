@@ -59,7 +59,6 @@ class SqlHelper(_context: Context) {
             override fun onResponse(call: Call, response: Response) {
                 resultString = response.body?.string()
                 createSQL(resultString)
-
             }
         })
     }
@@ -70,6 +69,7 @@ class SqlHelper(_context: Context) {
         var toiletList = databaseHelper?.allToilets()
         return toiletList
     }
+
 
 
 }
