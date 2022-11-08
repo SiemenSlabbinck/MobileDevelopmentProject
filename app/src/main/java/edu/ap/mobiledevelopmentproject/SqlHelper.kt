@@ -4,6 +4,7 @@ import android.content.Context
 import okhttp3.*
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.util.Log
 import android.widget.Toast
 import com.beust.klaxon.Parser
 import com.google.gson.GsonBuilder
@@ -19,6 +20,7 @@ class SqlHelper(_context: Context) {
 
     // creates sqlite database from json string
     fun createSQL(resultString: String?){
+
         println("Attempting to create SQL")
         val gson = GsonBuilder().create()
         var toiletArray = (gson.fromJson(resultString, ToiletGson::class.java)).features
@@ -41,7 +43,7 @@ class SqlHelper(_context: Context) {
     }
 
     // fetches json string from url
-    fun fetchJson(): String? {
+    fun fetchJson() {
         println("Attempting to fetch JSON")
         val url = "https://geodata.antwerpen.be/arcgissql/rest/services/P_Portal/portal_publiek1/MapServer/8/query?outFields=*&where=1%3D1&f=geojson"
         val request = Request.Builder().url(url).build()
@@ -55,12 +57,11 @@ class SqlHelper(_context: Context) {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                println(body)
-                resultString = body
+                resultString = response.body?.string()
+                createSQL(resultString)
+
             }
         })
-        return resultString
     }
 
     // returns list of toilets from sqlite database
@@ -69,5 +70,6 @@ class SqlHelper(_context: Context) {
         var toiletList = databaseHelper?.allToilets()
         return toiletList
     }
+
 
 }

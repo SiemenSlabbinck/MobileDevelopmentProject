@@ -6,11 +6,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.PopupWindow
-import android.widget.RadioButton
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
@@ -34,13 +32,17 @@ class MainActivity : AppCompatActivity() {
                 if(data != null)
                 {
                     //If data does not exist yet -> create
-                    createData();
+                    //createData();
                 }
 
             }
         }
+//        createData();
 
         loadData()
+        loadDataInList()
+
+
 
         if(dataInitialized == true)
         {
@@ -66,33 +68,46 @@ class MainActivity : AppCompatActivity() {
 
     // Create data
     private fun createData() {
-        /*
-        //Fetch json and create sqllite database
+        //Create sqllite database
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
-        var json = sqlHelper.fetchJson()
-        if (json != null)
-            sqlHelper.createSQL(json)
+        sqlHelper!!.fetchJson()
 
         //add sqllite data to firebase
         var firebaseHelper = FirebaseHelper()
-        var toilets = sqlHelper.getToilets()
+        var toilets = sqlHelper!!.getToilets()
         if (toilets != null) {
             for (toilet in toilets){
                 firebaseHelper.add(toilet)
             }
         }
-         */
     }
 
     // Load data
     private fun loadData() {
-        /*
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
         var toilets = sqlHelper!!.getToilets()
-         */
+        Log.d("toilets", toilets.toString())
     }
+
+    fun loadDataInList() {
+        val arrayAdapter: ArrayAdapter<*>
+        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        val toiletAdresses = ArrayList<String>()
+        if (toilets != null) {
+            for (toilet in toilets) {
+                toiletAdresses.add(toilet.street.toString() + " " + toilet.number.toString())
+            }
+        }
+        // access the listView from xml file
+        var mListView = findViewById<ListView>(R.id.listView)
+
+        arrayAdapter = ArrayAdapter(this,
+            android.R.layout.simple_list_item_1, toiletAdresses)
+        mListView.adapter = arrayAdapter
+    }
+
 
     //    Popup methods
     private fun displayFilterDialog() {

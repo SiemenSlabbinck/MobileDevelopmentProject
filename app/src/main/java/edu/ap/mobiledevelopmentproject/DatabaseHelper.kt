@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import java.util.ArrayList
 
 
@@ -25,6 +26,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     // add toilet to sqllite database
     fun addToilet(jsonObject: Feature): Long {
+
         val db = this.writableDatabase
         val values = ContentValues()
 
