@@ -99,34 +99,6 @@
             android:textSize="16dp" />
 
         <EditText
-            android:id="@+id/x_coord"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/border"
-            android:hint="X Coordinaat"
-            android:inputType="text"
-            android:maxLength="10"
-            android:paddingLeft="30dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="16dp" />
-
-        <EditText
-            android:id="@+id/y_coord"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/border"
-            android:hint="Y Coordinaat"
-            android:inputType="text"
-            android:maxLength="10"
-            android:paddingLeft="30dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="16dp" />
-
-        <EditText
             android:id="@+id/email"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
