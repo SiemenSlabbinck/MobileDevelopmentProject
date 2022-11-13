@@ -106,7 +106,7 @@
             android:background="@drawable/border"
             android:hint="E-mail adres"
             android:inputType="text"
-            android:maxLength="10"
+            android:maxLength="50"
             android:paddingLeft="30dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
@@ -139,26 +139,26 @@
                     android:id="@+id/radio_option_m"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="M"
+                    android:text="Man"
                     android:textColor="#000" />
 
                 <RadioButton
                     android:id="@+id/radio_option_v"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="V"
+                    android:text="Vrouw"
                     android:textColor="#000" />
 
                 <RadioButton
                     android:id="@+id/radio_option_mv"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="M/V"
+                    android:text="Man/vrouw"
                     android:textColor="#000" />
             </RadioGroup>
 
             <RadioGroup
-                android:id="@+id/WheelchairGroup"
+                android:id="@+id/wheelchairGroup"
                 android:layout_width="130dp"
                 android:layout_height="110dp"
                 android:layout_marginStart="10dp"
@@ -199,7 +199,7 @@
             android:orientation="horizontal">
 
             <RadioGroup
-                android:id="@+id/DamperTableGroup"
+                android:id="@+id/damperTableGroup"
                 android:layout_width="130dp"
                 android:layout_height="120dp"
                 android:layout_marginStart="10dp"
@@ -236,40 +236,6 @@
                     android:layout_height="wrap_content"
                     android:text="Enkel luiertafel (geen toilet)"
                     android:textColor="#000" />
-            </RadioGroup>
-
-            <RadioGroup
-                android:id="@+id/availableGroup"
-                android:layout_width="130dp"
-                android:layout_height="110dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:id="@+id/isAvailableText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Beschikbaar"
-                    android:textColor="#000" />
-
-                <RadioButton
-                    android:id="@+id/isAvailable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Ja"
-                    android:textColor="#000" />
-
-                <RadioButton
-                    android:id="@+id/isNotAvailable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Nee"
-                    android:textColor="#000" />
-
             </RadioGroup>
 
         </LinearLayout>

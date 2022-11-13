@@ -84,11 +84,6 @@ class MapView : AppCompatActivity(){
         this.toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
     }
 
-    fun goBack(view:View) {
-        finish()
-    }
-
-
     override fun finish(): Unit {
         super.finish()
     }
