@@ -131,6 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="Aanwezig"
+            android:onClick="onRadioButtonDamperTableClicked"
             android:textColor="#fff" />
 
         <RadioButton
@@ -138,6 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="Niet aanwezig"
+            android:onClick="onRadioButtonDamperTableClicked"
             android:textColor="#fff" />
 
         <RadioButton
@@ -145,6 +147,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="Enkel luiertafel (geen toilet)"
+            android:onClick="onRadioButtonDamperTableClicked"
             android:textColor="#fff" />
     </RadioGroup>
 

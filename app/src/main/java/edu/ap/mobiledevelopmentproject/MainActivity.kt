@@ -3,12 +3,13 @@ package edu.ap.mobiledevelopmentproject
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import edu.ap.mobiledevelopmentproject.R.*
+import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Create data
+    //region Create/Load data
     private fun createData() {
         //Create sqllite database
         if (sqlHelper == null)
@@ -81,7 +82,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Load data
     private fun loadData() {
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
@@ -108,8 +108,9 @@ class MainActivity : AppCompatActivity() {
         mListView.adapter = arrayAdapter
 
     }
+    //endregion
 
-    // Filters
+    //region Filters
     fun filterListOnGender(gender:String) {
         val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
         val filteredList = ArrayList<Toilet>()
@@ -188,9 +189,10 @@ class MainActivity : AppCompatActivity() {
 
         loadDataInList(filteredList)
     }
+    //endregion
 
 
-    //    Popup methods
+    //region popup methods
     private fun displayFilterDialog() {
         var popupDialog = Dialog(this)
         popupDialog.setCancelable(false)
@@ -297,6 +299,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    //endregion
 
 
     fun showToast(message: String) {

@@ -1,6 +1,8 @@
 package edu.ap.mobiledevelopmentproject
 
-class Toilet {
+import java.io.Serializable
+
+class Toilet : Serializable {
     var street: String? = null
     var number: String? = null
     var postal_code: Int? = null
