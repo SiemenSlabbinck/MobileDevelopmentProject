@@ -2,14 +2,16 @@ package edu.ap.mobiledevelopmentproject
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import edu.ap.mobiledevelopmentproject.R.*
-import java.io.Serializable
+import edu.ap.mobiledevelopmentproject.R.id
+import edu.ap.mobiledevelopmentproject.R.layout
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,25 +69,27 @@ class MainActivity : AppCompatActivity() {
 
     //region Create/Load data
     private fun createData() {
-        //Create sqllite database
+        //Get data from firestore and save in sqlite
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
-        sqlHelper!!.fetchJson()
-
-        //add sqllite data to firebase
-        var firebaseHelper = FirebaseHelper()
-        var toilets = sqlHelper!!.getToilets()
+        var firebaseHelper = FirebaseHelper(this@MainActivity)
+        var toilets = firebaseHelper.read()
         if (toilets != null) {
             for (toilet in toilets){
-                firebaseHelper.add(toilet)
+                sqlHelper!!.createSQL(toilets)
             }
         }
     }
 
     private fun loadData() {
+        //Load data from sqlite
+        Log.w(ContentValues.TAG, "Loading data")
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
         this.toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        if (toilets.size == 0){
+            createData()
+        }
     // Load data in listView
         loadDataInList(toilets)
     }

@@ -3,15 +3,11 @@ package edu.ap.mobiledevelopmentproject
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
-import java.util.ArrayList
 
 
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
-    override fun onCreate(db: SQLiteDatabase) {
+class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){    override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE_TOILETS)
     }
 
@@ -24,25 +20,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         super.onDowngrade(db, oldVersion, newVersion)
     }
 
-    // add toilet to sqllite database
-    fun addToilet(jsonObject: Feature): Long {
-
-        val db = this.writableDatabase
-        val values = ContentValues()
-
-        values.put(STREET, jsonObject.properties?.STRAAT)
-        values.put(NUMBER, jsonObject.properties?.HUISNUMMER)
-        values.put(POSTAL_CODE, jsonObject.properties?.POSTCODE)
-        values.put(DISTRICT, jsonObject.properties?.DISTRICT)
-        values.put(TARGET_AUDIENCE, jsonObject.properties?.DOELGROEP)
-        values.put(WHEELCHAIR_ACCESSIBLE, jsonObject.properties?.INTEGRAAL_TOEGANKELIJK)
-        values.put(CHANGING_TABLE, jsonObject.properties?.LUIERTAFEL)
-        values.put(X_COORD, jsonObject.geometry?.coordinates?.get(0))
-        values.put(Y_COORD, jsonObject.geometry?.coordinates?.get(1))
-
-        return db.insert(TABLE_TOILETS, null, values)
-    }
-
+    // add toilet to sqlite database from toilet object
     fun addToilet(toilet: Toilet): Long {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -56,6 +34,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         values.put(CHANGING_TABLE, toilet.changing_table)
         values.put(X_COORD, toilet.x_coord)
         values.put(Y_COORD, toilet.y_coord)
+        values.put(EMAIL, toilet.email)
 
         return db.insert(TABLE_TOILETS, null, values)
     }
@@ -73,7 +52,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val toiletList = ArrayList<Toilet>()
         val db = this.readableDatabase
 
-        val projection= arrayOf(KEY_ID, STREET, NUMBER, POSTAL_CODE, DISTRICT, TARGET_AUDIENCE, WHEELCHAIR_ACCESSIBLE, CHANGING_TABLE, X_COORD, Y_COORD)
+        val projection= arrayOf(KEY_ID, STREET, NUMBER, POSTAL_CODE, DISTRICT, TARGET_AUDIENCE, WHEELCHAIR_ACCESSIBLE, CHANGING_TABLE, X_COORD, Y_COORD, EMAIL)
         val sortOrder = "${KEY_ID} ASC"
 
         val cursor = db.query(
@@ -98,6 +77,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 toiletInfo.changing_table = cursor.getString(cursor.getColumnIndex(CHANGING_TABLE))
                 toiletInfo.x_coord = cursor.getDouble(cursor.getColumnIndex((X_COORD)))
                 toiletInfo.y_coord = cursor.getDouble(cursor.getColumnIndex((Y_COORD)))
+                toiletInfo.email = cursor.getString(cursor.getColumnIndex(EMAIL))
                 toiletList.add(toiletInfo)
             }
         }
@@ -121,6 +101,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private val CHANGING_TABLE = "changing_table"
         private val X_COORD = "x_coord"
         private val Y_COORD = "y_coord"
+        private val EMAIL = "email"
 
         private val CREATE_TABLE_TOILETS = ("CREATE TABLE "
                 + TABLE_TOILETS + "("
@@ -133,7 +114,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + WHEELCHAIR_ACCESSIBLE + " TEXT,"
                 + CHANGING_TABLE + " TEXT,"
                 + X_COORD + " TEXT,"
-                + Y_COORD + " TEXT );")
+                + Y_COORD + " TEXT,"
+                + EMAIL + " TEXT );")
 
         private val DELETE_TABLE_TOILETS = "DROP TABLE IF EXISTS $TABLE_TOILETS"
 

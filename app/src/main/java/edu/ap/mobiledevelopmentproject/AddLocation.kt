@@ -3,7 +3,6 @@ package edu.ap.mobiledevelopmentproject
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import org.osmdroid.util.GeoPoint
@@ -67,7 +66,8 @@ class AddLocation : AppCompatActivity() {
             wheelchair_accessible = wheelchair.toString(),
             changing_table = damperTable.toString(),
             x_coord = latitude.toDouble(),
-            y_coord = longitude.toDouble()
+            y_coord = longitude.toDouble(),
+            email = email.text.toString()
         )
 
         //If added succesful

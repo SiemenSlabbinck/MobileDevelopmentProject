@@ -10,6 +10,7 @@ class Toilet {
     var changing_table: String? = null
     var x_coord: Double? = null
     var y_coord: Double? = null
+    var email: String? = null
 
     constructor()
 
@@ -22,7 +23,8 @@ class Toilet {
         wheelchair_accessible: String?,
         changing_table: String?,
         x_coord: Double?,
-        y_coord: Double?
+        y_coord: Double?,
+        email: String?
     ) {
         this.street = street
         this.number = number
@@ -33,5 +35,6 @@ class Toilet {
         this.changing_table = changing_table
         this.x_coord = x_coord
         this.y_coord = y_coord
+        this.email = email
     }
 }
