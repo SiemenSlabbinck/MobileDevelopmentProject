@@ -10,6 +10,9 @@ import java.io.IOException
 
 
 class AddLocation : AppCompatActivity() {
+    private var sqlHelper: SqlHelper? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_location)
@@ -70,6 +73,8 @@ class AddLocation : AppCompatActivity() {
             email = email.text.toString()
         )
 
+        sqlHelper = SqlHelper(this)
+        sqlHelper!!.addToilet(toilet)
         //If added succesful
         Toast.makeText(baseContext, "Locatie toegevoegd", Toast.LENGTH_LONG).show()
 
