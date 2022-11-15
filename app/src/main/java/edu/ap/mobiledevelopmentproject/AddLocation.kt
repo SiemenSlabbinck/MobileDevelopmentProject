@@ -68,8 +68,8 @@ class AddLocation : AppCompatActivity() {
             target_audience = gender.toString(),
             wheelchair_accessible = wheelchair.toString(),
             changing_table = damperTable.toString(),
-            x_coord = latitude.toDouble(),
-            y_coord = longitude.toDouble(),
+            x_coord = longitude.toDouble(),
+            y_coord = latitude.toDouble(),
             email = email.text.toString()
         )
 
