@@ -5,11 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -128,7 +124,7 @@ class MapView : AppCompatActivity(){
     private fun addToiletMarkers(toilets:ArrayList<Toilet>) {
         if(toilets.size>0) {
             for (toilet in toilets) {
-                addMarker(GeoPoint(toilet.y_coord!!, toilet.x_coord!!), toilet.street + " " + toilet.number)
+                addMarker(GeoPoint(toilet.x_coord!!, toilet.y_coord!!), toilet.street + " " + toilet.number)
             }
         } else {
             Toast.makeText(baseContext, "Geen toiletten gevonden", Toast.LENGTH_LONG).show()

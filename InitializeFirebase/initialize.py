@@ -73,8 +73,8 @@ for data in data_json.features:
 		data.properties.DOELGROEP,
 		data.properties.INTEGRAAL_TOEGANKELIJK,
 		data.properties.LUIERTAFEL,
-		data.properties.X_COORD,
-		data.properties.Y_COORD,
+		data.geometry.coordinates[1],
+		data.geometry.coordinates[0],
 		data.properties.CONTACTPERSOON
 	)
 	db.collection("toilets").add(toilet.to_dict())
