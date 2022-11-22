@@ -53,7 +53,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.readableDatabase
 
         val projection= arrayOf(KEY_ID, STREET, NUMBER, POSTAL_CODE, DISTRICT, TARGET_AUDIENCE, WHEELCHAIR_ACCESSIBLE, CHANGING_TABLE, X_COORD, Y_COORD, EMAIL)
-        val sortOrder = "${KEY_ID} ASC"
+        val sortOrder = "$KEY_ID ASC"
         val cursor = db.query(
             TABLE_TOILETS,
             projection,
@@ -66,7 +66,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         with(cursor) {
             while (moveToNext()) {
-                var toiletInfo = Toilet()
+                val toiletInfo = Toilet()
                 toiletInfo.street = cursor.getString(cursor.getColumnIndex(STREET))
                 toiletInfo.number = cursor.getString(cursor.getColumnIndex(NUMBER))
                 toiletInfo.postal_code = cursor.getInt(cursor.getColumnIndex(POSTAL_CODE))
@@ -88,21 +88,21 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     companion object {
 
         var DATABASE_NAME = "toilet_database"
-        private val DATABASE_VERSION = 1
-        private val TABLE_TOILETS = "toilets"
-        private val KEY_ID = "id"
-        private val STREET = "street"
-        private val NUMBER = "number"
-        private val POSTAL_CODE = "postal_code"
-        private val DISTRICT = "disctrict"
-        private val TARGET_AUDIENCE = "target_audience"
-        private val WHEELCHAIR_ACCESSIBLE = "wheelchair_accessible"
-        private val CHANGING_TABLE = "changing_table"
-        private val X_COORD = "x_coord"
-        private val Y_COORD = "y_coord"
-        private val EMAIL = "email"
+        private const val DATABASE_VERSION = 1
+        private const val TABLE_TOILETS = "toilets"
+        private const val KEY_ID = "id"
+        private const val STREET = "street"
+        private const val NUMBER = "number"
+        private const val POSTAL_CODE = "postal_code"
+        private const val DISTRICT = "disctrict"
+        private const val TARGET_AUDIENCE = "target_audience"
+        private const val WHEELCHAIR_ACCESSIBLE = "wheelchair_accessible"
+        private const val CHANGING_TABLE = "changing_table"
+        private const val X_COORD = "x_coord"
+        private const val Y_COORD = "y_coord"
+        private const val EMAIL = "email"
 
-        private val CREATE_TABLE_TOILETS = ("CREATE TABLE "
+        private const val CREATE_TABLE_TOILETS = ("CREATE TABLE "
                 + TABLE_TOILETS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + STREET + " TEXT,"
@@ -116,10 +116,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + Y_COORD + " TEXT,"
                 + EMAIL + " TEXT );")
 
-        private val DELETE_TABLE_TOILETS = "DROP TABLE IF EXISTS $TABLE_TOILETS"
+        private const val DELETE_TABLE_TOILETS = "DROP TABLE IF EXISTS $TABLE_TOILETS"
 
-        private val DELETE_FROM_TABLE = "DELETE FROM $TABLE_TOILETS"
+        private const val DELETE_FROM_TABLE = "DELETE FROM $TABLE_TOILETS"
 
-        private val SELECT_TOILETS = "SELECT * FROM $TABLE_TOILETS"
+        private const val SELECT_TOILETS = "SELECT * FROM $TABLE_TOILETS"
     }
 }

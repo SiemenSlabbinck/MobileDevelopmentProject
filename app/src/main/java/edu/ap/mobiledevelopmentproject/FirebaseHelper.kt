@@ -12,8 +12,6 @@ class FirebaseHelper(_context: Context) {
     private var sqlHelper: SqlHelper? = null
     private var context = _context
 
-
-
     // add toilet to firebase collection
     fun add(toilet: Toilet){
         db.collection("toilets")
@@ -33,7 +31,7 @@ class FirebaseHelper(_context: Context) {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    var toiletInfo = Toilet()
+                    val toiletInfo = Toilet()
                     toiletInfo.street = document.getString("street")
                     toiletInfo.number = document.getString("number")
                     toiletInfo.postal_code = document.getLong("postal_code")?.toInt()
@@ -47,7 +45,7 @@ class FirebaseHelper(_context: Context) {
                     toiletList.add(toiletInfo)
                     Log.d(TAG, "${document.id} => ${document.data}")
                 }
-                sqlHelper = SqlHelper(context);
+                sqlHelper = SqlHelper(context)
                 sqlHelper!!.createSQL(toiletList)
             }
             .addOnFailureListener { exception ->

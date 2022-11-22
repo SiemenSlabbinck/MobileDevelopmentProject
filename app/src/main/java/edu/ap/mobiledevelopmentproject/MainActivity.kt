@@ -21,9 +21,7 @@ class MainActivity : AppCompatActivity() {
     private var toiletFormattedList = ArrayList<String>()
     private var gender: String? = null
     private var wheelchair: String? = null
-    private var damper_Table: String? = null
-
-
+    private var changingTable: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,19 +35,10 @@ class MainActivity : AppCompatActivity() {
 
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
-
-                if(data != null)
-                {
-                    //If data does not exist yet -> create
-                    //createData();
-                }
-
             }
         }
-       // createData();
 
         loadData()
-
 
         if(dataInitialized == true)
         {
@@ -78,8 +67,8 @@ class MainActivity : AppCompatActivity() {
         //Get data from firestore and save in sqlite
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
-        var firebaseHelper = FirebaseHelper(this@MainActivity)
-        var toilets = firebaseHelper.read()
+        val firebaseHelper = FirebaseHelper(this@MainActivity)
+        val toilets = firebaseHelper.read()
         if (toilets != null) {
             for (toilet in toilets){
                 sqlHelper!!.createSQL(toilets)
@@ -96,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         if (toilets.size == 0){
             createData()
         }
-    // Load data in listView
+        // Load data in listView
         loadDataInList(toilets)
     }
 
@@ -123,7 +112,6 @@ class MainActivity : AppCompatActivity() {
 
     //region popup methods
     private fun displayFilterDialog() {
-        toiletFormattedList.clear()
         var popupDialog = Dialog(this)
         popupDialog.setCancelable(false)
         popupDialog.setContentView(layout.popup)
@@ -159,23 +147,22 @@ class MainActivity : AppCompatActivity() {
                     que += " AND "
             que += "wheelchair_accessible = '$wheelchair'"
         }
-        if (damper_Table != null) {
+        if (changingTable != null) {
             if (que != null) {
                 if (que.isNotBlank())
                     que += " AND "
             }
-            que += "changing_table = '$damper_Table'"
+            que += "changing_table = '$changingTable'"
         }
 
         filteredList = sqlHelper!!.getToilets(que) as ArrayList<Toilet>
         gender = null
         wheelchair = null
-        damper_Table = null
+        changingTable = null
         loadDataInList(filteredList)
     }
 
     fun onRadioButtonGenderClicked(view: View) {
-
         if (view is RadioButton) {
             // Is the button now checked?
             val checked = view.isChecked
@@ -197,9 +184,9 @@ class MainActivity : AppCompatActivity() {
                         // show man and women toilet
                         gender = "man/vrouw"
                     }
+                }
             }
         }
-    }
 
 
     fun onRadioButtonWheelchairClicked(view: View) {
@@ -233,17 +220,17 @@ class MainActivity : AppCompatActivity() {
                 id.radio_option_damperTableAvailable ->
                     if (checked) {
                         // show only wheelchair friendly toilets
-                        damper_Table = "ja"
+                        changingTable = "ja"
                     }
                 id.radio_option_damperTableNotAvailable ->
                     if (checked) {
                         // show all toilets
-                        damper_Table = "nee"
+                        changingTable = "nee"
                     }
                 id.radio_option_damperTableNoToilet ->
                     if (checked) {
                         // show all toilets
-                        damper_Table = "niet van toepassing"
+                        changingTable = "niet van toepassing"
                     }
             }
         }

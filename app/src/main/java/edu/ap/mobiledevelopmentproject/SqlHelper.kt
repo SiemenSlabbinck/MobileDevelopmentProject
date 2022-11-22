@@ -9,23 +9,21 @@ class SqlHelper(_context: Context) {
 
     fun createSQL(toiletArray: ArrayList<Toilet>){
         if (databaseHelper == null)
-            databaseHelper = DatabaseHelper(context);
+            databaseHelper = DatabaseHelper(context)
         for (toilet in toiletArray)
             databaseHelper!!.addToilet(toilet)
     }
 
     fun addToilet(toilet: Toilet){
         if (databaseHelper == null)
-            databaseHelper = DatabaseHelper(context);
+            databaseHelper = DatabaseHelper(context)
         databaseHelper!!.addToilet(toilet)
-
     }
 
     // returns list of toilets from sqlite database
     fun getToilets(selection: String?): java.util.ArrayList<Toilet>? {
         if (databaseHelper == null)
-            databaseHelper = DatabaseHelper(context);
-        var toiletList = databaseHelper?.allToilets(selection)
-        return toiletList
+            databaseHelper = DatabaseHelper(context)
+        return databaseHelper?.allToilets(selection)
     }
 }
