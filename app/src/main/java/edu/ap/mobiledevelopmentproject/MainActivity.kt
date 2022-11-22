@@ -19,6 +19,10 @@ class MainActivity : AppCompatActivity() {
     var sqlHelper: SqlHelper? = null
     private var toilets = ArrayList<Toilet>()
     private var toiletFormattedList = ArrayList<String>()
+    private var gender: String? = null
+    private var wheelchair: String? = null
+    private var damper_Table: String? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadDataInList(toilets:ArrayList<Toilet>) {
+        toiletFormattedList.clear()
         val arrayAdapter: ArrayAdapter<*>
         if (toilets != null) {
             for (toilet in toilets) {
@@ -112,38 +117,6 @@ class MainActivity : AppCompatActivity() {
             android.R.layout.simple_list_item_1, toiletFormattedList)
         mListView.adapter = arrayAdapter
 
-    }
-    //endregion
-
-    //region Filters
-    fun filterListOnGender(gender:String) {
-        var filteredList = ArrayList<Toilet>()
-        filteredList.clear()
-
-        filteredList = sqlHelper!!.getToilets("target_audience = '$gender'") as ArrayList<Toilet>
-
-        loadDataInList(filteredList)
-    }
-
-    fun filterListOnWheelchairAvailable(wheelchairAvailable:Boolean) {
-        var filteredList = ArrayList<Toilet>()
-        filteredList.clear()
-
-        if (wheelchairAvailable)
-            filteredList = sqlHelper!!.getToilets("wheelchair_accessible = 'ja'") as ArrayList<Toilet>
-        else
-            filteredList = sqlHelper!!.getToilets("wheelchair_accessible = 'nee'") as ArrayList<Toilet>
-
-        loadDataInList(filteredList)
-    }
-
-    fun filterListOnDamperTable(damperTable:String) {
-        var filteredList = ArrayList<Toilet>()
-        filteredList.clear()
-
-        filteredList = sqlHelper!!.getToilets("changing_table = '$damperTable'") as ArrayList<Toilet>
-
-        loadDataInList(filteredList)
     }
     //endregion
 
@@ -167,11 +140,38 @@ class MainActivity : AppCompatActivity() {
 
         filterButton.setOnClickListener {
             //Dismiss popup dialog
-
+            filter()
             popupDialog.dismiss();
         }
 
         popupDialog.show();
+    }
+
+    fun filter(){
+        var filteredList = ArrayList<Toilet>()
+        filteredList.clear()
+        var que: String? = ""
+        if (gender != null)
+            que += "target_audience = '$gender'"
+        if (wheelchair != null) {
+            if (que != null)
+                if (que.isNotBlank())
+                    que += " AND "
+            que += "wheelchair_accessible = '$wheelchair'"
+        }
+        if (damper_Table != null) {
+            if (que != null) {
+                if (que.isNotBlank())
+                    que += " AND "
+            }
+            que += "changing_table = '$damper_Table'"
+        }
+
+        filteredList = sqlHelper!!.getToilets(que) as ArrayList<Toilet>
+        gender = null
+        wheelchair = null
+        damper_Table = null
+        loadDataInList(filteredList)
     }
 
     fun onRadioButtonGenderClicked(view: View) {
@@ -185,20 +185,17 @@ class MainActivity : AppCompatActivity() {
                 id.radio_option_m ->
                     if (checked) {
                         // show only man toilet
-                        filterListOnGender("man")
-                        showToast("Mannen toiletten zichtbaar")
+                        gender = "man"
                     }
                 id.radio_option_v ->
                     if (checked) {
                         // show only woman toilet
-                        filterListOnGender("vrouw")
-                        showToast("Vrouwen toiletten zichtbaar")
+                        gender = "vrouw"
                     }
                 id.radio_option_mv ->
                     if (checked) {
                         // show man and women toilet
-                        filterListOnGender("man/vrouw")
-                        showToast("Alle toiletten zichtbaar")
+                        gender = "man/vrouw"
                     }
             }
         }
@@ -215,14 +212,12 @@ class MainActivity : AppCompatActivity() {
                 id.radio_option_wheelchairYes ->
                     if (checked) {
                         // show only wheelchair friendly toilets
-                        filterListOnWheelchairAvailable(true)
-                        showToast("Rolstoel vriendelijke toiletten zichtbaar")
+                        wheelchair = "ja"
                     }
                 id.radio_option_wheelchairNo ->
                     if (checked) {
                         // show all toilets
-                        filterListOnWheelchairAvailable(false)
-                        showToast("Rolstoel onvriendelijke toiletten zichtbaar")
+                        wheelchair = "nee"
                     }
             }
         }
@@ -238,20 +233,17 @@ class MainActivity : AppCompatActivity() {
                 id.radio_option_damperTableAvailable ->
                     if (checked) {
                         // show only wheelchair friendly toilets
-                        filterListOnDamperTable("ja")
-                        showToast("Toiletten met luiertafel zichtbaar")
+                        damper_Table = "ja"
                     }
                 id.radio_option_damperTableNotAvailable ->
                     if (checked) {
                         // show all toilets
-                        filterListOnDamperTable("nee")
-                        showToast("Toiletten zonder luiertafel zichtbaar")
+                        damper_Table = "nee"
                     }
                 id.radio_option_damperTableNoToilet ->
                     if (checked) {
                         // show all toilets
-                        filterListOnDamperTable("niet van toepassing")
-                        showToast("Alle toiletten zichtbaar")
+                        damper_Table = "niet van toepassing"
                     }
             }
         }
