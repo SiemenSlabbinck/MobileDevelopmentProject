@@ -40,8 +40,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-       // createData();
-
         loadData()
 
 
@@ -137,7 +135,8 @@ class MainActivity : AppCompatActivity() {
                 for(toilet in toilets) {
                     if(toilet.target_audience == gender)
                         filteredList.add(toilet)
-                }            }
+                }
+            }
         }
 
         loadDataInList(filteredList)
