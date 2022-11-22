@@ -77,7 +77,7 @@ class MapView : AppCompatActivity(){
     private fun loadData() {
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MapView)
-        this.toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        this.toilets = sqlHelper!!.getToilets(null) as ArrayList<Toilet>
     }
 
     override fun finish(): Unit {

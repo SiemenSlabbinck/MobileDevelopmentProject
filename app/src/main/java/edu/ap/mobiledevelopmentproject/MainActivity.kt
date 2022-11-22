@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
     var dataInitialized:Boolean = false
     var sqlHelper: SqlHelper? = null
     private var toilets = ArrayList<Toilet>()
+    private var toiletFormattedList = ArrayList<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         Log.w(ContentValues.TAG, "Loading data")
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
-        this.toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        this.toilets = sqlHelper!!.getToilets(null) as ArrayList<Toilet>
         if (toilets.size == 0){
             createData()
         }
@@ -96,7 +98,6 @@ class MainActivity : AppCompatActivity() {
 
     fun loadDataInList(toilets:ArrayList<Toilet>) {
         val arrayAdapter: ArrayAdapter<*>
-        val toiletFormattedList = ArrayList<String>()
         if (toilets != null) {
             for (toilet in toilets) {
                 toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString())
@@ -116,80 +117,31 @@ class MainActivity : AppCompatActivity() {
 
     //region Filters
     fun filterListOnGender(gender:String) {
-        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
-        val filteredList = ArrayList<Toilet>()
+        var filteredList = ArrayList<Toilet>()
         filteredList.clear()
 
-        for (e in toilets) {
-            if(gender == "man") {
-                for(toilet in toilets) {
-                    if(toilet.target_audience == gender)
-                        filteredList.add(toilet)
-                }
-            }
-            if(gender == "vrouw") {
-                for(toilet in toilets) {
-                    if(toilet.target_audience == gender)
-                        filteredList.add(toilet)
-                }
-            }
-            if(gender == "man/vrouw") {
-                for(toilet in toilets) {
-                    if(toilet.target_audience == gender)
-                        filteredList.add(toilet)
-                }            }
-        }
+        filteredList = sqlHelper!!.getToilets("target_audience = '$gender'") as ArrayList<Toilet>
 
         loadDataInList(filteredList)
     }
 
     fun filterListOnWheelchairAvailable(wheelchairAvailable:Boolean) {
-        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
-        val filteredList = ArrayList<Toilet>()
+        var filteredList = ArrayList<Toilet>()
         filteredList.clear()
 
-        for (e in toilets) {
-            if(wheelchairAvailable) {
-                for(toilet in toilets) {
-                    if(toilet.wheelchair_accessible == "ja")
-                        filteredList.add(toilet)
-                }
-            }
-            if(!wheelchairAvailable) {
-                for(toilet in toilets) {
-                    if(toilet.wheelchair_accessible == "nee" || toilet.wheelchair_accessible == null)
-                        filteredList.add(toilet)
-                }
-            }
-        }
+        if (wheelchairAvailable)
+            filteredList = sqlHelper!!.getToilets("wheelchair_accessible = 'ja'") as ArrayList<Toilet>
+        else
+            filteredList = sqlHelper!!.getToilets("wheelchair_accessible = 'nee'") as ArrayList<Toilet>
 
         loadDataInList(filteredList)
     }
 
     fun filterListOnDamperTable(damperTable:String) {
-        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
-        val filteredList = ArrayList<Toilet>()
+        var filteredList = ArrayList<Toilet>()
         filteredList.clear()
 
-        for (e in toilets) {
-            if(damperTable == "ja") {
-                for(toilet in toilets) {
-                    if(toilet.changing_table == damperTable)
-                        filteredList.add(toilet)
-                }
-            }
-            if(damperTable == "nee") {
-                for(toilet in toilets) {
-                    if(toilet.changing_table == damperTable || toilet.changing_table == null)
-                        filteredList.add(toilet)
-                }
-            }
-            if(damperTable == "niet van toepassing") {
-                for(toilet in toilets) {
-                    if(toilet.changing_table == damperTable || toilet.changing_table == null)
-                        filteredList.add(toilet)
-                }            }
-        }
+        filteredList = sqlHelper!!.getToilets("changing_table = '$damperTable'") as ArrayList<Toilet>
 
         loadDataInList(filteredList)
     }
@@ -198,6 +150,7 @@ class MainActivity : AppCompatActivity() {
 
     //region popup methods
     private fun displayFilterDialog() {
+        toiletFormattedList.clear()
         var popupDialog = Dialog(this)
         popupDialog.setCancelable(false)
         popupDialog.setContentView(layout.popup)

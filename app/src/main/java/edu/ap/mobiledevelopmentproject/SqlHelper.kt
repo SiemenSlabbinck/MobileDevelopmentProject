@@ -22,10 +22,10 @@ class SqlHelper(_context: Context) {
     }
 
     // returns list of toilets from sqlite database
-    fun getToilets(): java.util.ArrayList<Toilet>? {
+    fun getToilets(selection: String?): java.util.ArrayList<Toilet>? {
         if (databaseHelper == null)
             databaseHelper = DatabaseHelper(context);
-        var toiletList = databaseHelper?.allToilets()
+        var toiletList = databaseHelper?.allToilets(selection)
         return toiletList
     }
 }

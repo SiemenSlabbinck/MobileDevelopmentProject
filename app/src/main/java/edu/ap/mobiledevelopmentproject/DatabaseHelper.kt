@@ -47,18 +47,17 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     // returns list of toilets from sqlite database
     @SuppressLint("Range")
-    fun allToilets(): ArrayList<Toilet>{
+    fun allToilets(selection: String?): ArrayList<Toilet>{
 
         val toiletList = ArrayList<Toilet>()
         val db = this.readableDatabase
 
         val projection= arrayOf(KEY_ID, STREET, NUMBER, POSTAL_CODE, DISTRICT, TARGET_AUDIENCE, WHEELCHAIR_ACCESSIBLE, CHANGING_TABLE, X_COORD, Y_COORD, EMAIL)
         val sortOrder = "${KEY_ID} ASC"
-
         val cursor = db.query(
             TABLE_TOILETS,
             projection,
-            null,
+            selection,
             null,
             null,
             null,
