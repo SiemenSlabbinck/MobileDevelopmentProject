@@ -19,19 +19,6 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/getLocation"
-        android:layout_width="168dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="20dp"
-        android:backgroundTint="#fff"
-        android:radius="15dp"
-        android:text="Update huidige locatie"
-        android:textColor="#2F2E2E"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/textView3"
-        tools:layout_editor_absoluteY="11dp" />
-
-    <Button
         android:id="@+id/btn_addLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

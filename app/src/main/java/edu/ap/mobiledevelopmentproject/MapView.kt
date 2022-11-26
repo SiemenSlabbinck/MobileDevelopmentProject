@@ -9,8 +9,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.provider.ContactsContract.SearchSnippets.SNIPPET
-import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,14 +27,13 @@ import java.io.File
 class MapView : AppCompatActivity(), LocationListener {
 
     private lateinit var mMapView: MapView
-    private var mMyLocationOverlay: ItemizedOverlay<OverlayItem>? = null
-    private var items = ArrayList<OverlayItem>()
+    var distance = 0f
     private var toilets = ArrayList<Toilet>()
     var sqlHelper: SqlHelper? = null
 
     var myMarkers: ArrayList<Marker> = ArrayList()
     private lateinit var locationManager: LocationManager
-//    var location:Location
+    lateinit var crntLocation:Location
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +57,6 @@ class MapView : AppCompatActivity(), LocationListener {
                 Manifest.permission.ACCESS_COARSE_LOCATION), 100)
         }
 
-
         var btnAddLocation = findViewById<Button>(R.id.btn_addLocation)
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
@@ -74,11 +70,6 @@ class MapView : AppCompatActivity(), LocationListener {
                 }
 
             }
-        }
-
-        var btnGetLocation: Button = findViewById(R.id.getLocation)
-        btnGetLocation.setOnClickListener {
-            getLocation()
         }
 
         btnAddLocation.setOnClickListener {
@@ -102,8 +93,11 @@ class MapView : AppCompatActivity(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
+        mMapView.overlayManager.clear()
         addCurrentLocationMarker(GeoPoint(location.latitude, location.longitude), "Huidige locatie")
         setCenter(GeoPoint(location.latitude, location.longitude), "Huidige locatie")
+        crntLocation = location
+        addToiletMarkers(this.toilets)
     }
 
     private fun hasPermissions(): Boolean {
@@ -128,8 +122,6 @@ class MapView : AppCompatActivity(), LocationListener {
 
         mMapView?.controller?.setZoom(17.0)
         getLocation()
-        addToiletMarkers(this.toilets)
-
     }
 
     private fun addCurrentLocationMarker(geoPoint: GeoPoint, name: String) {
@@ -138,12 +130,8 @@ class MapView : AppCompatActivity(), LocationListener {
         myMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         myMarker.title = name
         myMarker.icon = resources.getDrawable(R.drawable.you_are_here)
-        myMarker.snippet = SNIPPET
         mMapView.getOverlays().add(myMarker)
         myMarkers.add(myMarker)
-//        location.setLatitude(geoPoint.latitude);
-//        location.setLongitude(geoPoint.longitude);
-
     }
 
     private fun addMarker(geoPoint: GeoPoint, name: String) {
@@ -152,7 +140,7 @@ class MapView : AppCompatActivity(), LocationListener {
         myMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         myMarker.title = name
         myMarker.icon = resources.getDrawable(R.drawable.pin_location)
-        myMarker.snippet = distanceBetween(geoPoint.latitude, geoPoint.longitude)
+        myMarker.snippet = "${distanceBetween(geoPoint.latitude, geoPoint.longitude)} km"
         mMapView.getOverlays().add(myMarker)
         myMarkers.add(myMarker)
     }
@@ -171,20 +159,16 @@ class MapView : AppCompatActivity(), LocationListener {
         }
     }
 
-    var distance = 0f
-
     private fun distanceBetween(latitude:Double, longitude:Double): String? {
 
         val newLocation = Location("newlocation")
-//        Log.d("cur", crntLocation.toString())
         newLocation.setLatitude(latitude);
         newLocation.setLongitude(longitude);
-        Log.d("new", newLocation.toString())
 
+        distance = crntLocation.distanceTo(newLocation) / 1000; // in km
+        var result = String.format("%.2f", distance);
 
-//        distance =crntLocation.distanceTo(newLocation) / 1000; // in km
-        Log.d("Distance", distance.toString())
-        return distance.toString();
+        return result
     }
 
 

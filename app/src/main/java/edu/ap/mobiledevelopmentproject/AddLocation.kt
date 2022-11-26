@@ -59,7 +59,6 @@ class AddLocation : AppCompatActivity() {
             longitude = location.longitude.toString()
         }
 
-//        TODO email van toevoeger nog aan toe voegen -> database changes?
         val toilet = Toilet(
             street = streetname.text.toString(),
             number = housenumber.text.toString(),
@@ -77,7 +76,7 @@ class AddLocation : AppCompatActivity() {
         sqlHelper!!.addToilet(toilet)
         //If added succesful
         Toast.makeText(baseContext, "Locatie toegevoegd", Toast.LENGTH_LONG).show()
-
+        finish()
     }
 
     // Convert address to lon/lat
