@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_map_view.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -70,6 +71,10 @@ class MapView : AppCompatActivity(), LocationListener {
                 }
 
             }
+        }
+
+        btn_showList.setOnClickListener {
+            finish()
         }
 
         btnAddLocation.setOnClickListener {

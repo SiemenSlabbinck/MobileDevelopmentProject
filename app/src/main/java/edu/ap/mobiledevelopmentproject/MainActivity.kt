@@ -1,23 +1,35 @@
 package edu.ap.mobiledevelopmentproject
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import edu.ap.mobiledevelopmentproject.R.id
 import edu.ap.mobiledevelopmentproject.R.layout
+import org.osmdroid.util.GeoPoint
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LocationListener {
 
     var dataInitialized:Boolean = false
     var sqlHelper: SqlHelper? = null
     private var toilets = ArrayList<Toilet>()
+    private lateinit var locationManager: LocationManager
+    lateinit var crntLocation:Location
+    var distance = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+        getLocation()
         loadData()
 
 
@@ -63,6 +76,19 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this, AddLocation::class.java)
             resultLauncher.launch(i)
         }
+    }
+
+    private fun getLocation() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100)
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
+    }
+
+    override fun onLocationChanged(location: Location) {
+        crntLocation = location
+        loadDataInList(toilets)
     }
 
     //region Create/Load data
@@ -89,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             createData()
         }
     // Load data in listView
-        loadDataInList(toilets)
+
     }
 
     fun loadDataInList(toilets:ArrayList<Toilet>) {
@@ -97,7 +123,8 @@ class MainActivity : AppCompatActivity() {
         val toiletFormattedList = ArrayList<String>()
         if (toilets != null) {
             for (toilet in toilets) {
-                toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString())
+                toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString() + " - Afstand: " + distanceBetween(
+                    toilet.x_coord!!, toilet.y_coord!!) + " km")
             }
         }
         if(toilets.isEmpty())
@@ -304,6 +331,17 @@ class MainActivity : AppCompatActivity() {
     }
     //endregion
 
+    private fun distanceBetween(latitude:Double, longitude:Double): String? {
+
+        val newLocation = Location("newlocation")
+        newLocation.setLatitude(latitude);
+        newLocation.setLongitude(longitude);
+
+        distance = crntLocation.distanceTo(newLocation) / 1000; // in km
+        var result = String.format("%.2f", distance);
+
+        return result
+    }
 
     fun showToast(message: String) {
         Toast.makeText(baseContext, message.toString(), Toast.LENGTH_LONG).show()

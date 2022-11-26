@@ -1,10 +1,13 @@
 package edu.ap.mobiledevelopmentproject
 
+import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.delay
 import org.osmdroid.util.GeoPoint
 import java.io.IOException
 
@@ -30,12 +33,33 @@ class AddLocation : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ResourceType")
     private fun getFormValue() {
         var streetname = findViewById<EditText>(R.id.streetname)
+        if(streetname.length() == 0) {
+            return Toast.makeText(baseContext, "Vul een naam in", Toast.LENGTH_LONG).show()
+        }
+
         var housenumber = findViewById<EditText>(R.id.housenumber)
+        if(housenumber.length() == 0) {
+            return Toast.makeText(baseContext, "Vul een huisnummer in", Toast.LENGTH_LONG).show()
+        }
+
         var zipcode = findViewById<EditText>(R.id.zipcode)
+        if(zipcode.length() == 0) {
+            return Toast.makeText(baseContext, "Vul een postcode in", Toast.LENGTH_LONG).show()
+        }
+
         var district = findViewById<EditText>(R.id.district)
+        if(district.length() == 0) {
+            return Toast.makeText(baseContext, "Vul een stad in", Toast.LENGTH_LONG).show()
+        }
+
         var email = findViewById<EditText>(R.id.email)
+        if(email.length() == 0) {
+            return Toast.makeText(baseContext, "Vul een email in", Toast.LENGTH_LONG).show()
+        }
+
         var latitude = ""
         var longitude = ""
 
@@ -45,12 +69,24 @@ class AddLocation : AppCompatActivity() {
         var damperTableGroup = findViewById<RadioGroup>(R.id.damperTableGroup);
 
         val selectedGenderId: Int = genderGroup.checkedRadioButtonId
+        if(selectedGenderId <= 0) {
+            return Toast.makeText(baseContext, "Kies een geslacht optie", Toast.LENGTH_LONG).show()
+        }
+
         val selectedWheelchairId: Int = wheelchairGroup.checkedRadioButtonId
+        if(selectedWheelchairId <= 0) {
+            return Toast.makeText(baseContext, "Kies een rolstoel optie", Toast.LENGTH_LONG).show()
+        }
+
         val selectedDamperTableId: Int = damperTableGroup.checkedRadioButtonId
+        if(selectedDamperTableId <= 0) {
+            return Toast.makeText(baseContext, "Kies een luiertafel optie", Toast.LENGTH_LONG).show()
+        }
 
         var gender = findViewById<RadioButton>(selectedGenderId).text;
         var wheelchair = findViewById<RadioButton>(selectedWheelchairId).text;
         var damperTable = findViewById<RadioButton>(selectedDamperTableId).text;
+
 
         var address = "${streetname.text} ${housenumber.text}, ${zipcode.text} ${district.text}"
         var location = getLocationFromAddress(address)
@@ -58,6 +94,7 @@ class AddLocation : AppCompatActivity() {
             latitude = location.latitude.toString()
             longitude = location.longitude.toString()
         }
+
 
         val toilet = Toilet(
             street = streetname.text.toString(),
@@ -75,9 +112,9 @@ class AddLocation : AppCompatActivity() {
         sqlHelper = SqlHelper(this)
         sqlHelper!!.addToilet(toilet)
         //If added succesful
-        Toast.makeText(baseContext, "Locatie toegevoegd", Toast.LENGTH_LONG).show()
         finish()
     }
+
 
     // Convert address to lon/lat
     fun getLocationFromAddress(strAddress: String?): GeoPoint? {
