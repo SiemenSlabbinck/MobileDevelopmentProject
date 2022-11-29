@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         //components of view
         var closeButton = popupDialog.findViewById<ImageButton>(id.btn_close_popup)
-        var filterButton = popupDialog.findViewById<Button>(id.btn_filter_on_values)
+        var clearFilterButton = popupDialog.findViewById<Button>(id.clear_filter)
 
         //functions
         closeButton.setOnClickListener {
@@ -238,7 +238,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
             popupDialog.dismiss();
         }
 
-        filterButton.setOnClickListener {
+        clearFilterButton.setOnClickListener {
             //Dismiss popup dialog
 
             popupDialog.dismiss();
