@@ -33,10 +33,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private var gender: String? = null
     private var wheelchair: String? = null
     private var changingTable: String? = null
+    var isGranted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
+
 
         var openFilterDiaglog = findViewById<ImageButton>(id.btn_filter)
         var btnShowMapView = findViewById<Button>(id.btn_showMap)
@@ -48,8 +50,24 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 val data: Intent? = result.data
             }
         }
-        getLocation()
-        loadData()
+
+        val requestMultiplePermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { result ->
+                if(result[Manifest.permission.ACCESS_FINE_LOCATION] != true || result[Manifest.permission.ACCESS_COARSE_LOCATION] != true)
+                {
+                    val i = Intent(this, PermissionDenied::class.java)
+                    resultLauncher.launch(i)
+                } else {
+                    getLocation()
+                    loadData()
+                }
+            }
+
+        requestMultiplePermissionLauncher.launch(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        )
 
         if(dataInitialized == true)
         {
