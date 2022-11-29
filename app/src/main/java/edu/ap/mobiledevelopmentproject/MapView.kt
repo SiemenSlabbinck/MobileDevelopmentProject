@@ -130,6 +130,9 @@ class MapView : AppCompatActivity(), LocationListener {
     }
 
     private fun addCurrentLocationMarker(geoPoint: GeoPoint, name: String) {
+        if(isDestroyed){
+            return
+        }
         val myMarker = Marker(mMapView)
         myMarker.position = GeoPoint(geoPoint.latitude, geoPoint.longitude)
         myMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
@@ -140,6 +143,9 @@ class MapView : AppCompatActivity(), LocationListener {
     }
 
     private fun addMarker(geoPoint: GeoPoint, name: String) {
+        if(isDestroyed){
+            return
+        }
         val myMarker = Marker(mMapView)
         myMarker.position = GeoPoint(geoPoint.latitude, geoPoint.longitude)
         myMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
