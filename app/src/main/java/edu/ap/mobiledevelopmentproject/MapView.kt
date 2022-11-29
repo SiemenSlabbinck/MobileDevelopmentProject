@@ -86,7 +86,7 @@ class MapView : AppCompatActivity(), LocationListener {
     private fun loadData() {
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MapView)
-        this.toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        this.toilets = sqlHelper!!.getToilets(null) as ArrayList<Toilet>
     }
 
     private fun getLocation() {

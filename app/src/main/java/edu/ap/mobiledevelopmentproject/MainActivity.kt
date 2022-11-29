@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private lateinit var locationManager: LocationManager
     lateinit var crntLocation:Location
     var distance = 0f
+    private var toiletFormattedList = ArrayList<String>()
+    private var gender: String? = null
+    private var wheelchair: String? = null
+    private var changingTable: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,18 +47,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
-
-                if(data != null)
-                {
-                    //If data does not exist yet -> create
-                    //createData();
-                }
-
             }
         }
         getLocation()
         loadData()
-
 
         if(dataInitialized == true)
         {
@@ -96,8 +92,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
         //Get data from firestore and save in sqlite
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
-        var firebaseHelper = FirebaseHelper(this@MainActivity)
-        var toilets = firebaseHelper.read()
+        val firebaseHelper = FirebaseHelper(this@MainActivity)
+        val toilets = firebaseHelper.read()
         if (toilets != null) {
             for (toilet in toilets){
                 sqlHelper!!.createSQL(toilets)
@@ -110,17 +106,17 @@ class MainActivity : AppCompatActivity(), LocationListener {
         Log.w(ContentValues.TAG, "Loading data")
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
-        this.toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
+        this.toilets = sqlHelper!!.getToilets(null) as ArrayList<Toilet>
         if (toilets.size == 0){
             createData()
         }
-    // Load data in listView
-
+        // Load data in listView
+        loadDataInList(toilets)
     }
 
     fun loadDataInList(toilets:ArrayList<Toilet>) {
+        toiletFormattedList.clear()
         val arrayAdapter: ArrayAdapter<*>
-        val toiletFormattedList = ArrayList<String>()
         if (toilets != null) {
             for (toilet in toilets) {
                 toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString() + " - Afstand: " + distanceBetween(
@@ -137,90 +133,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         mListView.adapter = arrayAdapter
 
     }
-    //endregion
-
-    //region Filters
-    fun filterListOnGender(gender:String) {
-        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
-        val filteredList = ArrayList<Toilet>()
-        filteredList.clear()
-
-        for (e in toilets) {
-            if(gender == "man") {
-                for(toilet in toilets) {
-                    if(toilet.target_audience == gender)
-                        filteredList.add(toilet)
-                }
-            }
-            if(gender == "vrouw") {
-                for(toilet in toilets) {
-                    if(toilet.target_audience == gender)
-                        filteredList.add(toilet)
-                }
-            }
-            if(gender == "man/vrouw") {
-                for(toilet in toilets) {
-                    if(toilet.target_audience == gender)
-                        filteredList.add(toilet)
-                }
-            }
-        }
-
-        loadDataInList(filteredList)
-    }
-
-    fun filterListOnWheelchairAvailable(wheelchairAvailable:Boolean) {
-        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
-        val filteredList = ArrayList<Toilet>()
-        filteredList.clear()
-
-        for (e in toilets) {
-            if(wheelchairAvailable) {
-                for(toilet in toilets) {
-                    if(toilet.wheelchair_accessible == "ja")
-                        filteredList.add(toilet)
-                }
-            }
-            if(!wheelchairAvailable) {
-                for(toilet in toilets) {
-                    if(toilet.wheelchair_accessible == "nee" || toilet.wheelchair_accessible == null)
-                        filteredList.add(toilet)
-                }
-            }
-        }
-
-        loadDataInList(filteredList)
-    }
-
-    fun filterListOnDamperTable(damperTable:String) {
-        val toilets = sqlHelper!!.getToilets() as ArrayList<Toilet>
-        val filteredList = ArrayList<Toilet>()
-        filteredList.clear()
-
-        for (e in toilets) {
-            if(damperTable == "ja") {
-                for(toilet in toilets) {
-                    if(toilet.changing_table == damperTable)
-                        filteredList.add(toilet)
-                }
-            }
-            if(damperTable == "nee") {
-                for(toilet in toilets) {
-                    if(toilet.changing_table == damperTable || toilet.changing_table == null)
-                        filteredList.add(toilet)
-                }
-            }
-            if(damperTable == "niet van toepassing") {
-                for(toilet in toilets) {
-                    if(toilet.changing_table == damperTable || toilet.changing_table == null)
-                        filteredList.add(toilet)
-                }            }
-        }
-
-        loadDataInList(filteredList)
-    }
-    //endregion
-
 
     //region popup methods
     private fun displayFilterDialog() {
@@ -240,15 +152,41 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         clearFilterButton.setOnClickListener {
             //Dismiss popup dialog
-
+            filter()
             popupDialog.dismiss();
         }
 
         popupDialog.show();
     }
 
-    fun onRadioButtonGenderClicked(view: View) {
+    fun filter(){
+        var filteredList = ArrayList<Toilet>()
+        filteredList.clear()
+        var que: String? = ""
+        if (gender != null)
+            que += "target_audience = '$gender'"
+        if (wheelchair != null) {
+            if (que != null)
+                if (que.isNotBlank())
+                    que += " AND "
+            que += "wheelchair_accessible = '$wheelchair'"
+        }
+        if (changingTable != null) {
+            if (que != null) {
+                if (que.isNotBlank())
+                    que += " AND "
+            }
+            que += "changing_table = '$changingTable'"
+        }
 
+        filteredList = sqlHelper!!.getToilets(que) as ArrayList<Toilet>
+        gender = null
+        wheelchair = null
+        changingTable = null
+        loadDataInList(filteredList)
+    }
+
+    fun onRadioButtonGenderClicked(view: View) {
         if (view is RadioButton) {
             // Is the button now checked?
             val checked = view.isChecked
@@ -258,24 +196,21 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 id.radio_option_m ->
                     if (checked) {
                         // show only man toilet
-                        filterListOnGender("man")
-                        showToast("Mannen toiletten zichtbaar")
+                        gender = "man"
                     }
                 id.radio_option_v ->
                     if (checked) {
                         // show only woman toilet
-                        filterListOnGender("vrouw")
-                        showToast("Vrouwen toiletten zichtbaar")
+                        gender = "vrouw"
                     }
                 id.radio_option_mv ->
                     if (checked) {
                         // show man and women toilet
-                        filterListOnGender("man/vrouw")
-                        showToast("Alle toiletten zichtbaar")
+                        gender = "man/vrouw"
                     }
+                }
             }
         }
-    }
 
 
     fun onRadioButtonWheelchairClicked(view: View) {
@@ -288,14 +223,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 id.radio_option_wheelchairYes ->
                     if (checked) {
                         // show only wheelchair friendly toilets
-                        filterListOnWheelchairAvailable(true)
-                        showToast("Rolstoel vriendelijke toiletten zichtbaar")
+                        wheelchair = "ja"
                     }
                 id.radio_option_wheelchairNo ->
                     if (checked) {
                         // show all toilets
-                        filterListOnWheelchairAvailable(false)
-                        showToast("Rolstoel onvriendelijke toiletten zichtbaar")
+                        wheelchair = "nee"
                     }
             }
         }
@@ -311,20 +244,17 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 id.radio_option_damperTableAvailable ->
                     if (checked) {
                         // show only wheelchair friendly toilets
-                        filterListOnDamperTable("ja")
-                        showToast("Toiletten met luiertafel zichtbaar")
+                        changingTable = "ja"
                     }
                 id.radio_option_damperTableNotAvailable ->
                     if (checked) {
                         // show all toilets
-                        filterListOnDamperTable("nee")
-                        showToast("Toiletten zonder luiertafel zichtbaar")
+                        changingTable = "nee"
                     }
                 id.radio_option_damperTableNoToilet ->
                     if (checked) {
                         // show all toilets
-                        filterListOnDamperTable("niet van toepassing")
-                        showToast("Alle toiletten zichtbaar")
+                        changingTable = "niet van toepassing"
                     }
             }
         }
