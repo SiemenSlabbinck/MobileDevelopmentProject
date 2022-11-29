@@ -142,6 +142,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         //components of view
         var closeButton = popupDialog.findViewById<ImageButton>(id.btn_close_popup)
+        var filterButton = popupDialog.findViewById<Button>(id.btn_filter)
         var clearFilterButton = popupDialog.findViewById<Button>(id.clear_filter)
 
         //functions
@@ -150,9 +151,15 @@ class MainActivity : AppCompatActivity(), LocationListener {
             popupDialog.dismiss();
         }
 
-        clearFilterButton.setOnClickListener {
+        filterButton.setOnClickListener {
             //Dismiss popup dialog
             filter()
+            popupDialog.dismiss();
+        }
+
+        clearFilterButton.setOnClickListener {
+            this.toilets = sqlHelper!!.getToilets(null) as ArrayList<Toilet>
+            loadDataInList(toilets)
             popupDialog.dismiss();
         }
 
