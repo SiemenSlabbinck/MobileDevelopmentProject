@@ -172,12 +172,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
         filteredList.clear()
         var que: String? = ""
         if (gender != null)
-            que += "target_audience = '$gender'"
+            que += "target_audience = '$gender' OR target_audience = 'man/vrouw'"
         if (wheelchair != null) {
             if (que != null)
                 if (que.isNotBlank())
                     que += " AND "
             que += "wheelchair_accessible = '$wheelchair'"
+            if (wheelchair == "nee")
+                que += "OR wheelchair_accessible IS NULL"
         }
         if (changingTable != null) {
             if (que != null) {
@@ -185,6 +187,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
                     que += " AND "
             }
             que += "changing_table = '$changingTable'"
+            if (changingTable == "nee")
+                que += "OR changing_table IS NULL"
         }
 
         filteredList = sqlHelper!!.getToilets(que) as ArrayList<Toilet>
