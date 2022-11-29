@@ -47,18 +47,8 @@ class MapView : AppCompatActivity(), LocationListener {
         osmConfig.osmdroidTileCache = tileCache
         setContentView(R.layout.activity_map_view)
         mMapView = findViewById(R.id.mapview)
-
-        if (hasPermissions()) {
-            loadData()
-            initMap()
-        }
-        else {
-            ActivityCompat.requestPermissions(this, arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION), 100)
-        }
-
         var btnAddLocation = findViewById<Button>(R.id.btn_addLocation)
+
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
             if (result.resultCode == Activity.RESULT_OK) {
@@ -72,6 +62,25 @@ class MapView : AppCompatActivity(), LocationListener {
 
             }
         }
+
+        val requestMultiplePermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { result ->
+                if(result[Manifest.permission.ACCESS_FINE_LOCATION] != true || result[Manifest.permission.ACCESS_COARSE_LOCATION] != true)
+                {
+                    val i = Intent(this, PermissionDenied::class.java)
+                    resultLauncher.launch(i)
+                } else {
+                    loadData()
+                    initMap()
+                }
+            }
+
+        requestMultiplePermissionLauncher.launch(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        )
+
 
         btn_showList.setOnClickListener {
             finish()
@@ -95,6 +104,7 @@ class MapView : AppCompatActivity(), LocationListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100)
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
+        crntLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
     }
 
     override fun onLocationChanged(location: Location) {
