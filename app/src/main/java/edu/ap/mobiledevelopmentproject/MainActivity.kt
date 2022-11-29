@@ -20,7 +20,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import edu.ap.mobiledevelopmentproject.R.id
 import edu.ap.mobiledevelopmentproject.R.layout
-import org.osmdroid.util.GeoPoint
 
 class MainActivity : AppCompatActivity(), LocationListener {
 
@@ -80,7 +79,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100)
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
+        crntLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
     }
+
 
     override fun onLocationChanged(location: Location) {
         crntLocation = location
