@@ -73,6 +73,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (sqlHelper == null)
+            sqlHelper = SqlHelper(this)
+        this.toilets = sqlHelper!!.getToilets(null) as ArrayList<Toilet>
+        loadDataInList(toilets)
+    }
+
     private fun getLocation() {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
@@ -255,17 +263,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
             when (view.getId()) {
                 id.radio_option_damperTableAvailable ->
                     if (checked) {
-                        // show only wheelchair friendly toilets
-                        changingTable = "ja"
+                        changingTable = "Aanwezig"
                     }
                 id.radio_option_damperTableNotAvailable ->
                     if (checked) {
-                        // show all toilets
                         changingTable = "nee"
                     }
                 id.radio_option_damperTableNoToilet ->
                     if (checked) {
-                        // show all toilets
                         changingTable = "niet van toepassing"
                     }
             }

@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.delay
 import org.osmdroid.util.GeoPoint
 import java.io.IOException
 
@@ -35,6 +33,7 @@ class AddLocation : AppCompatActivity() {
 
     @SuppressLint("ResourceType")
     private fun getFormValue() {
+        try {
         var streetname = findViewById<EditText>(R.id.streetname)
         if(streetname.length() == 0) {
             return Toast.makeText(baseContext, "Vul een naam in", Toast.LENGTH_LONG).show()
@@ -108,11 +107,17 @@ class AddLocation : AppCompatActivity() {
             y_coord = longitude.toDouble(),
             email = email.text.toString()
         )
+            sqlHelper = SqlHelper(this)
+            sqlHelper!!.addToilet(toilet)
+            Toast.makeText(baseContext, "Locatie toegevoegd!", Toast.LENGTH_LONG).show()
 
-        sqlHelper = SqlHelper(this)
-        sqlHelper!!.addToilet(toilet)
+            finish()
+        } catch (ex: java.lang.Exception) {
+            Toast.makeText(baseContext, "Geen geldige locatie!", Toast.LENGTH_LONG).show()
+            ex.printStackTrace()
+        }
+
         //If added succesful
-        finish()
     }
 
 
