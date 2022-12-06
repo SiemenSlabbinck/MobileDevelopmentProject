@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private var gender: String? = null
     private var wheelchair: String? = null
     private var changingTable: String? = null
+    private var permission: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +55,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
             ) { result ->
                 if(result[Manifest.permission.ACCESS_FINE_LOCATION] != true || result[Manifest.permission.ACCESS_COARSE_LOCATION] != true)
                 {
-                    val i = Intent(this, PermissionDenied::class.java)
-                    resultLauncher.launch(i)
+                    permission = false
+                    loadData()
                 } else {
                     getLocation()
                     loadData()
@@ -78,8 +79,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         btnShowMapView.setOnClickListener {
-            val i = Intent(this, MapView::class.java)
-            resultLauncher.launch(i)
+            if (permission == true){
+                val i = Intent(this, MapView::class.java)
+                resultLauncher.launch(i)
+            } else {
+                Message.message(baseContext, "Geef GPS toestemming om de kaart te bekijken!")
+            }
         }
 
         btnAddLocation.setOnClickListener {
@@ -142,8 +147,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val arrayAdapter: ArrayAdapter<*>
         if (toilets != null) {
             for (toilet in toilets) {
-                toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString() + " - Afstand: " + distanceBetween(
-                    toilet.x_coord!!, toilet.y_coord!!) + " km")
+                if (permission){
+                    toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString() + " - Afstand: " + distanceBetween(
+                        toilet.x_coord!!, toilet.y_coord!!) + " km")
+                } else {
+                    toiletFormattedList.add(toilet.street.toString() + " " + toilet.number.toString())
+                }
             }
         }
         if(toilets.isEmpty())

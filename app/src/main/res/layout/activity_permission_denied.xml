@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".PermissionDenied">
 
+    <Button
+        android:id="@+id/btn_showList2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="664dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="19dp"
+        android:backgroundTint="#97000C"
+        android:onClick="goBack"
+        android:text="Lijst weergave"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
