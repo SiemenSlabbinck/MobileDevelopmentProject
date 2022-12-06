@@ -33,19 +33,16 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private var gender: String? = null
     private var wheelchair: String? = null
     private var changingTable: String? = null
-    var isGranted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-
 
         var openFilterDiaglog = findViewById<ImageButton>(id.btn_filter)
         var btnShowMapView = findViewById<Button>(id.btn_showMap)
         var btnAddLocation = findViewById<Button>(id.btn_addLocation)
 
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
             }
@@ -69,7 +66,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         )
 
-        if(dataInitialized == true)
+        if(dataInitialized)
         {
             val i = Intent(this, MapView::class.java)
             resultLauncher.launch(i)
@@ -110,9 +107,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         } catch (ex: Exception){
             Log.d("location", ex.toString())
         }
-        }
-
-
+    }
 
     override fun onLocationChanged(location: Location) {
         crntLocation = location
@@ -158,7 +153,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         arrayAdapter = ArrayAdapter(this,
             android.R.layout.simple_list_item_1, toiletFormattedList)
         mListView.adapter = arrayAdapter
-
     }
 
     //region popup methods
@@ -189,7 +183,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
             loadDataInList(toilets)
             popupDialog.dismiss();
         }
-
         popupDialog.show();
     }
 
@@ -309,10 +302,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         } catch (ex: Exception) {
             return null
         }
-    }
-
-    fun showToast(message: String) {
-        Toast.makeText(baseContext, message.toString(), Toast.LENGTH_LONG).show()
     }
 }
 

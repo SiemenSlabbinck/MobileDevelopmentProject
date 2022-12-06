@@ -10,7 +10,6 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -31,7 +30,6 @@ class MapView : AppCompatActivity(), LocationListener {
     var distance = 0f
     private var toilets = ArrayList<Toilet>()
     var sqlHelper: SqlHelper? = null
-
     var myMarkers: ArrayList<Marker> = ArrayList()
     private lateinit var locationManager: LocationManager
     lateinit var crntLocation:Location
@@ -50,16 +48,8 @@ class MapView : AppCompatActivity(), LocationListener {
         var btnAddLocation = findViewById<Button>(R.id.btn_addLocation)
 
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
-
-                if(data != null)
-                {
-                    //If data does not exist yet -> create
-                    //createData();
-                }
-
             }
         }
 
@@ -80,7 +70,6 @@ class MapView : AppCompatActivity(), LocationListener {
         requestMultiplePermissionLauncher.launch(
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         )
-
 
         btn_showList.setOnClickListener {
             finish()
@@ -115,17 +104,12 @@ class MapView : AppCompatActivity(), LocationListener {
         addToiletMarkers(this.toilets)
     }
 
-    private fun hasPermissions(): Boolean {
-    return  ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-    }
-
     private fun initMap() {
         mMapView?.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
         // add receiver to get location from tap
         val mReceive: MapEventsReceiver = object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
-                Toast.makeText(baseContext, p.latitude.toString() + " - " + p.longitude, Toast.LENGTH_LONG).show()
+                Message.message(baseContext, p.latitude.toString() + " - " + p.longitude)
                 return false
             }
 
@@ -176,7 +160,7 @@ class MapView : AppCompatActivity(), LocationListener {
                 addMarker(GeoPoint(toilet.x_coord!!, toilet.y_coord!!), toilet.street + " " + toilet.number)
             }
         } else {
-            Toast.makeText(baseContext, "Geen toiletten gevonden", Toast.LENGTH_LONG).show()
+            Message.message(baseContext, "Geen toiletten gevonden")
         }
     }
 
@@ -191,8 +175,4 @@ class MapView : AppCompatActivity(), LocationListener {
 
         return result
     }
-
-
-
-
 }

@@ -20,7 +20,6 @@ class AddLocation : AppCompatActivity() {
         var btnSaveLocation = findViewById<Button>(R.id.btnSaveLocation)
         var btn_goBack = findViewById<Button>(R.id.btn_goBack)
 
-
         btnSaveLocation.setOnClickListener {
             getFormValue()
         }
@@ -36,27 +35,27 @@ class AddLocation : AppCompatActivity() {
         try {
         var streetname = findViewById<EditText>(R.id.streetname)
         if(streetname.length() == 0) {
-            return Toast.makeText(baseContext, "Vul een naam in", Toast.LENGTH_LONG).show()
+            return Message.message(baseContext, "Vul een naam in")
         }
 
         var housenumber = findViewById<EditText>(R.id.housenumber)
         if(housenumber.length() == 0) {
-            return Toast.makeText(baseContext, "Vul een huisnummer in", Toast.LENGTH_LONG).show()
+            return Message.message(baseContext, "Vul een huisnummer in")
         }
 
         var zipcode = findViewById<EditText>(R.id.zipcode)
         if(zipcode.length() == 0) {
-            return Toast.makeText(baseContext, "Vul een postcode in", Toast.LENGTH_LONG).show()
+            return Message.message(baseContext, "Vul een postcode in")
         }
 
         var district = findViewById<EditText>(R.id.district)
         if(district.length() == 0) {
-            return Toast.makeText(baseContext, "Vul een stad in", Toast.LENGTH_LONG).show()
+            return Message.message(baseContext, "Vul een stad in")
         }
 
         var email = findViewById<EditText>(R.id.email)
         if(email.length() == 0) {
-            return Toast.makeText(baseContext, "Vul een email in", Toast.LENGTH_LONG).show()
+            return Message.message(baseContext, "Vul een email in")
         }
 
         var latitude = ""
@@ -69,17 +68,17 @@ class AddLocation : AppCompatActivity() {
 
         val selectedGenderId: Int = genderGroup.checkedRadioButtonId
         if(selectedGenderId <= 0) {
-            return Toast.makeText(baseContext, "Kies een geslacht optie", Toast.LENGTH_LONG).show()
+            return Message.message(baseContext, "Kies een geslacht optie")
         }
 
         val selectedWheelchairId: Int = wheelchairGroup.checkedRadioButtonId
         if(selectedWheelchairId <= 0) {
-            return Toast.makeText(baseContext, "Kies een rolstoel optie", Toast.LENGTH_LONG).show()
+            return Message.message(baseContext, "Kies een rolstoel optie")
         }
 
         val selectedDamperTableId: Int = damperTableGroup.checkedRadioButtonId
         if(selectedDamperTableId <= 0) {
-            return Toast.makeText(baseContext, "Kies een luiertafel optie", Toast.LENGTH_LONG).show()
+            return Message.message(baseContext, "Kies een luiertafel optie")
         }
 
         var gender = findViewById<RadioButton>(selectedGenderId).text;
@@ -93,7 +92,6 @@ class AddLocation : AppCompatActivity() {
             latitude = location.latitude.toString()
             longitude = location.longitude.toString()
         }
-
 
         val toilet = Toilet(
             street = streetname.text.toString(),
@@ -109,15 +107,12 @@ class AddLocation : AppCompatActivity() {
         )
             sqlHelper = SqlHelper(this)
             sqlHelper!!.addToilet(toilet)
-            Toast.makeText(baseContext, "Locatie toegevoegd!", Toast.LENGTH_LONG).show()
-
+            Message.message(baseContext, "Locatie toegevoegd!")
             finish()
         } catch (ex: java.lang.Exception) {
-            Toast.makeText(baseContext, "Geen geldige locatie!", Toast.LENGTH_LONG).show()
+            Message.message(baseContext, "Geen geldige locatie!")
             ex.printStackTrace()
         }
-
-        //If added succesful
     }
 
 
