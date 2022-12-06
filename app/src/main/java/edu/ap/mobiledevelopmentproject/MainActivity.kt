@@ -301,11 +301,15 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val newLocation = Location("newlocation")
         newLocation.setLatitude(latitude);
         newLocation.setLongitude(longitude);
+        try {
+            distance = crntLocation.distanceTo(newLocation) / 1000; // in km
+            var result = String.format("%.2f", distance);
 
-        distance = crntLocation.distanceTo(newLocation) / 1000; // in km
-        var result = String.format("%.2f", distance);
+            return result
+        } catch (ex: Exception) {
+            return null
+        }
 
-        return result
     }
 
     fun showToast(message: String) {
