@@ -35,7 +35,7 @@ class AddLocation : AppCompatActivity() {
         try {
         var streetname = findViewById<EditText>(R.id.streetname)
         if(streetname.length() == 0) {
-            return Message.message(baseContext, "Vul een naam in")
+            return Message.message(baseContext, "Vul een straatnaam in")
         }
 
         var housenumber = findViewById<EditText>(R.id.housenumber)
