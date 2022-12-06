@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         this.toilets = sqlHelper!!.getToilets(null) as ArrayList<Toilet>
         if (toilets.size == 0){
             createData()
-            onResume()
+            Message.message(baseContext, "Open kaart weergave om de toiletten te laden")
         }
         // Load data in listView
         loadDataInList(toilets)
