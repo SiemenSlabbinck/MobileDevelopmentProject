@@ -105,8 +105,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100)
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
-        crntLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
-    }
+        try {
+            crntLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
+        } catch (ex: Exception){
+            Log.d("location", ex.toString())
+        }
+        }
+
 
 
     override fun onLocationChanged(location: Location) {
@@ -120,12 +125,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         if (sqlHelper == null)
             sqlHelper = SqlHelper(this@MainActivity)
         val firebaseHelper = FirebaseHelper(this@MainActivity)
-        val toilets = firebaseHelper.read()
-        if (toilets != null) {
-            for (toilet in toilets){
-                sqlHelper!!.createSQL(toilets)
-            }
-        }
+        firebaseHelper.read()
     }
 
     private fun loadData() {
@@ -309,7 +309,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         } catch (ex: Exception) {
             return null
         }
-
     }
 
     fun showToast(message: String) {

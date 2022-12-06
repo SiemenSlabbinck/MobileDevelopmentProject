@@ -25,7 +25,7 @@ class FirebaseHelper(_context: Context) {
     }
 
     // returns list of toilets from firebase collection
-    fun read(): ArrayList<Toilet> {
+    fun read(){
         val toiletList = ArrayList<Toilet>()
         db.collection("toilets")
             .get()
@@ -51,7 +51,6 @@ class FirebaseHelper(_context: Context) {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents", exception)
             }
-        return toiletList
     }
 
     // deletes document from firebase collection
@@ -61,5 +60,4 @@ class FirebaseHelper(_context: Context) {
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
             .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
     }
-
 }
