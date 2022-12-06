@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         this.toilets = sqlHelper!!.getToilets(null) as ArrayList<Toilet>
         if (toilets.size == 0){
             createData()
+            onResume()
         }
         // Load data in listView
         loadDataInList(toilets)
