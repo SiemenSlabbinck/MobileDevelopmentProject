@@ -20,7 +20,8 @@ import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.*
+import org.osmdroid.views.overlay.MapEventsOverlay
+import org.osmdroid.views.overlay.Marker
 import java.io.File
 
 
@@ -78,6 +79,16 @@ class MapView : AppCompatActivity(), LocationListener {
         btnAddLocation.setOnClickListener {
             val i = Intent(this, AddLocation::class.java)
             resultLauncher.launch(i)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        try {
+            loadData()
+            addToiletMarkers(this.toilets)
+        } catch (e: java.lang.Exception){
+
         }
     }
 
