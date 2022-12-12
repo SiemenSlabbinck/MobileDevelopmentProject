@@ -9,6 +9,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -104,8 +105,11 @@ class MapView : AppCompatActivity(), LocationListener {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100)
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
-        crntLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
-    }
+        try {
+            crntLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
+        } catch (ex: Exception){
+            Log.d("location", ex.toString())
+        }    }
 
     override fun onLocationChanged(location: Location) {
         mMapView.overlayManager.clear()
